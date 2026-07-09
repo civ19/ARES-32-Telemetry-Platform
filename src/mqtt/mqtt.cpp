@@ -3,7 +3,6 @@
 #include "esp_event.h"
 #include "freertos/event_groups.h"
 #include "mqtt_client.h"
-
 #include "abstractions.h"
 
 static const char *TAGM = "MQTT";
