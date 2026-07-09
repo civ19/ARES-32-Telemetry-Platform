@@ -6,7 +6,7 @@
 #include "esp_netif.h" // Defines IP_EVENT
 #include "freertos/event_groups.h"
 
-#include "shortcuts.h"
+#include "abstractions.h"
 #include "wifi.h"
 
 static const char *TAG = "EVENT_LOOP";

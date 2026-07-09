@@ -1,6 +1,6 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
-#include "shortcuts.h"
+#include "abstractions.h"
 #include "esp_log.h"
 
 SemaphoreHandle_t printMutex = NULL;

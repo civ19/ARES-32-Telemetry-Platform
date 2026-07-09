@@ -4,7 +4,7 @@
 #include "freertos/event_groups.h"
 #include "mqtt_client.h"
 
-#include "shortcuts.h"
+#include "abstractions.h"
 
 static const char *TAGM = "MQTT";
 
