@@ -11,11 +11,16 @@
 
 static const char *TAG = "EVENT_LOOP";
 
-EventGroupHandle_t wifi_event_group;
+
+EventGroupHandle_t wifi_event_group = NULL;
+
+
+
 
 
 static uint8_t retry_ctr = 0;
 static uint8_t max_retry = 5;
+
 void reconnect() {
     if(retry_ctr < max_retry) {
         esp_wifi_connect();

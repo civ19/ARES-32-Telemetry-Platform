@@ -241,6 +241,7 @@
                 "C:/Users/ronal/.platformio/packages/framework-espidf/components/rt/include",
                 "C:/Users/ronal/.platformio/packages/framework-espidf/components/spiffs/include",
                 "C:/Summer_2026/Embedded/ESP32/Projects/Weather_Station/managed_components/espressif__mqtt/include",
+                "C:/Summer_2026/Embedded/ESP32/Projects/Weather_Station/managed_components/espressif__cjson/cJSON",
                 ""
             ],
             "browse": {
@@ -479,6 +480,7 @@
                     "C:/Users/ronal/.platformio/packages/framework-espidf/components/rt/include",
                     "C:/Users/ronal/.platformio/packages/framework-espidf/components/spiffs/include",
                     "C:/Summer_2026/Embedded/ESP32/Projects/Weather_Station/managed_components/espressif__mqtt/include",
+                    "C:/Summer_2026/Embedded/ESP32/Projects/Weather_Station/managed_components/espressif__cjson/cJSON",
                     ""
                 ]
             },
@@ -495,6 +497,8 @@
                 "IDF_VER=\"6.0.1\"",
                 "ESP_PSA_ITS_AVAILABLE",
                 "ESP_PLATFORM",
+                "CJSON_NESTING_LIMIT=1000",
+                "CJSON_CIRCULAR_LIMIT=10000",
                 "PLATFORMIO=60119",
                 "ARDUINO_ESP32S3_DEV",
                 "ARDUINO_USB_MODE=1",

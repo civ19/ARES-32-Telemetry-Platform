@@ -10,6 +10,7 @@
 
 static const char *TAGM = "MQTT";
 
+
 static void mqtt_event_callback(void *handler_args, esp_event_base_t dept, int32_t event_id, void* event_data) {
     switch(event_id) {
         //connected and disconnected cases

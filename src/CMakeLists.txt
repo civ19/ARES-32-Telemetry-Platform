@@ -1,8 +1,9 @@
 idf_component_register(
     SRCS
-        "main.cpp"
-        "mqtt/mqtt.cpp"
-        "wifi/wifi.cpp"
+        "main.c"
+        "mqtt/mqtt.c"
+        "wifi/wifi.c"
+        "abstractions/abstractions.c"
 
     INCLUDE_DIRS
         "."

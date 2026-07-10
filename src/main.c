@@ -10,10 +10,7 @@
 #include "wifi/wifi.h"
 #include "abstractions/abstractions.h"
 
-
-
-
-extern "C" void app_main(void) {
+void app_main(void) {
     nvs_event_init(); //storing network config and attaching the callback functions to the events. default event loop too
 
     wifi_event_group = xEventGroupCreate();
