@@ -42,7 +42,7 @@ void reconnect() {
 static void wifi_event_callback(void *arg, esp_event_base_t dept, int32_t event_id, void* data) { //manages wifi state
     if(dept == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
         if(xSemaphoreTake(printMutex, portMAX_DELAY)) {
-            ESP_LOGW(TAG, "Disconnected. Reconnecting...");
+            ESP_LOGW(TAG, "\nDisconnected. Reconnecting...");
             xSemaphoreGive(printMutex);
             
         }
@@ -56,7 +56,7 @@ static void wifi_event_callback(void *arg, esp_event_base_t dept, int32_t event_
         ip_event_got_ip_t *event_data = (ip_event_got_ip_t* )data;
         xEventGroupSetBits(wifi_event_group, WIFI_CONNECTED_BIT);
         if(xSemaphoreTake(printMutex, portMAX_DELAY)) { 
-            ESP_LOGI(TAG, "Got IP: " IPSTR, IP2STR(&event_data->ip_info.ip));
+            ESP_LOGI(TAG, "\nGot IP: " IPSTR, IP2STR(&event_data->ip_info.ip));
             xSemaphoreGive(printMutex);
         }
     }

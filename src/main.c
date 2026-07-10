@@ -21,9 +21,9 @@ void app_main(void) {
 
 
     //gatekeeper
-    ESP_LOGI("MAIN", "Waiting for WiFi...");
+    ESP_LOGI("\nMAIN", "Waiting for WiFi...");
     xEventGroupWaitBits(wifi_event_group, WIFI_CONNECTED_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
-    ESP_LOGI("MAIN", "We are online!");
+    ESP_LOGI("\nMAIN", "We are online!");
 
     mqtt_conf();
 
