@@ -1,18 +1,15 @@
-#include "driver/spi_master.h"
-#include "driver/gpio.h"
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "esp_event.h"
-#include "nvs_flash.h"
-#include "esp_wifi.h" // Defines WIFI_EVENT
-#include "esp_netif.h" // Defines IP_EVENT
 #include "freertos/event_groups.h"
 #include "mqtt_client.h"
+#include "cJSON.h"
 
 //other custom files
 #include "mqtt/mqtt.h"
 #include "wifi/wifi.h"
-#include "abstractions.h"
+#include "abstractions/abstractions.h"
+
 
 
 
@@ -35,5 +32,3 @@ extern "C" void app_main(void) {
 
     
 }
-
-

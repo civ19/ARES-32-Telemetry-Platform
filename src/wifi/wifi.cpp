@@ -6,12 +6,12 @@
 #include "esp_netif.h" // Defines IP_EVENT
 #include "freertos/event_groups.h"
 
-#include "abstractions.h"
+#include "abstractions/abstractions.h"
 #include "wifi.h"
 
 static const char *TAG = "EVENT_LOOP";
-EventGroupHandle_t wifi_event_group = NULL;
-SemaphoreHandle_t printMutex = NULL;
+
+EventGroupHandle_t wifi_event_group;
 
 
 static uint8_t retry_ctr = 0;
