@@ -4,6 +4,7 @@ idf_component_register(
         "mqtt/mqtt.c"
         "wifi/wifi.c"
         "abstractions/abstractions.c"
+        "json/json.c"
 
     INCLUDE_DIRS
         "."

@@ -3,7 +3,7 @@
 #include "esp_event.h"
 #include "freertos/event_groups.h"
 #include "mqtt_client.h"
-#include "cJSON.h"
+
 
 //other custom files
 #include "mqtt/mqtt.h"

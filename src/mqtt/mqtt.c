@@ -9,6 +9,7 @@
 #include "mqtt.h"
 
 static const char *TAGM = "MQTT";
+static esp_mqtt_client_handle_t client;
 
 
 static void mqtt_event_callback(void *handler_args, esp_event_base_t dept, int32_t event_id, void* event_data) {
@@ -71,4 +72,8 @@ void mqtt_conf() {
 
     ESP_ERROR_CHECK(esp_mqtt_client_register_event(client_handle, (esp_mqtt_event_id_t) ESP_EVENT_ANY_ID, mqtt_event_callback, NULL));
 
+}
+
+void mqtt_publish(char* payload, const char* topic, uint8_t qos) {
+    esp_mqtt_client_publish(client, topic, payload, 0, qos, 0);
 }

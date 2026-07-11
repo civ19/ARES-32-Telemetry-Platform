@@ -2,5 +2,5 @@
 
 
 void mqtt_conf();
-
+void mqtt_publish(char* payload, const char* topic, uint8_t qos);
 
