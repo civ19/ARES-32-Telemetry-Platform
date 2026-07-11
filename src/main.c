@@ -9,6 +9,7 @@
 #include "mqtt/mqtt.h"
 #include "wifi/wifi.h"
 #include "abstractions/abstractions.h"
+#include "json/json.h"
 
 void app_main(void) {
     nvs_event_init(); //storing network config and attaching the callback functions to the events. default event loop too
@@ -26,6 +27,8 @@ void app_main(void) {
     ESP_LOGI("\nMAIN", "We are online!");
 
     mqtt_conf();
+
+    xTaskCreatePinnedToCore(send_payload, "jsonsend",2048, NULL, 1, NULL, 1);
 
     
 }

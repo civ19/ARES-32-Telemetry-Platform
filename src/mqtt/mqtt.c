@@ -8,7 +8,7 @@
 #include "abstractions/abstractions.h"
 #include "mqtt.h"
 
-static const char *TAGM = "MQTT";
+const char *TAGM = "MQTT";
 static esp_mqtt_client_handle_t client;
 
 
