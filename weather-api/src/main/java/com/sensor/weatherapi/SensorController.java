@@ -13,6 +13,7 @@ import java.util.List;
 public class SensorController {
 
     private final SensorService service;
+
     @GetMapping("/api/sensors")
     public ResponseEntity<List<SensorResponse>> getReadings() {
         List<SensorResponse> resp = service.getAll24();
