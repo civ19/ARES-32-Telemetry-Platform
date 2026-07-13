@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Sensor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
