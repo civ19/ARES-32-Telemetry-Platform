@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class SensorService {
     private final SensorRepository repo;
 
-    public SensorResponse saveData() {
+    public SensorResponse saveData(SensorResponse resp) {
         Sensor sensor = new Sensor()
     }
 
