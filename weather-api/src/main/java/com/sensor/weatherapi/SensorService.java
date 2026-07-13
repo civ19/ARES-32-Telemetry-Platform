@@ -9,7 +9,13 @@ public class SensorService {
     private final SensorRepository repo;
 
     public SensorResponse saveData(SensorResponse resp) {
-        Sensor sensor = new Sensor()
+        Sensor sensor = new Sensor();
+        //confiug
+        sensor.setId(resp.id());
+        sensor.setTemp(resp.temp());
+        sensor.setPressure(resp.pressure());
+
+
     }
 
 }
