@@ -58,13 +58,14 @@ static void mqtt_event_callback(void *handler_args, esp_event_base_t dept, int32
     }
 }
 
+esp_mqtt_client_handle_t client_handle = NULL;
 void mqtt_conf() {
     //set broker
     esp_mqtt_client_config_t mqtt_config = {};
     mqtt_config.broker.address.uri = "mqtt://10.0.0.74:1883";
 
     //initializing mqtt client
-    esp_mqtt_client_handle_t client_handle = esp_mqtt_client_init(&mqtt_config);
+    client_handle = esp_mqtt_client_init(&mqtt_config);
     //start mqtt
     ESP_ERROR_CHECK(esp_mqtt_client_start(client_handle)); //starts the connection process from esp to mqtt broker
     mutexPrint(TAGM, "Mqtt Started.", 'I');
@@ -75,5 +76,11 @@ void mqtt_conf() {
 }
 
 void mqtt_publish(char* payload, const char* topic, uint8_t qos) {
-    esp_mqtt_client_publish(client, topic, payload, 0, qos, 0);
+    if(client_handle == NULL)
+    {
+        mutexPrint(TAGM, "Mqtt not init", 'E');
+        return;
+    }
+
+    else esp_mqtt_client_publish(client_handle, topic, payload, 0, qos, 0);
 }
