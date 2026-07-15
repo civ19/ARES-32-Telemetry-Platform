@@ -33,7 +33,8 @@ void app_main(void) {
 
     mqtt_conf();
 
-    xTaskCreatePinnedToCore(sensor_send, "jsonsend",2048, NULL, 1, NULL, 1);
+    xTaskCreatePinnedToCore(bme_read_task, "bmeReadTask",4096, NULL, 2, NULL, 1);
+    xTaskCreatePinnedToCore(bme_publish, "bmePublishTask", 4096, NULL, 1, NULL, 1);
 
     
 }

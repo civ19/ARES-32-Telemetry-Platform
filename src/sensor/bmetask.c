@@ -8,6 +8,14 @@
 
 QueueHandle_t bme_queue;
 
+typedef struct {
+    float temp;
+    float hum;
+    float pres;
+} bme_payload_t;
+
+bme_payload_t data;
+
 void bme_read_task(void* pv) {
 
     for(;;) {
@@ -21,15 +29,12 @@ void bme_read_task(void* pv) {
         int32_t adc_T = (raw_data[3] << 12) | (raw_data[4] << 4) | (raw_data[5] >> 4);
         int32_t adc_H = (raw_data[6] << 8)  | raw_data[7];
 
-        
-        float temp = calc_temp(adc_T, &cal); 
-        float pres = calc_pressure(adc_P, &cal);
-        float hum  = calc_humidity(adc_H, &cal);
 
-        
+        data.temp = calc_temp(adc_T, &cal); 
+        data.pres = calc_pressure(adc_P, &cal);
+        data.hum  = calc_humidity(adc_H, &cal);
 
-        send_payload(temp, hum, pres);
-        mutexPrint("PUBLISH", "Message sent!", 'I');
+        xQueueSend(bme_queue, &data, 0); 
 
 
         vTaskDelay(pdMS_TO_TICKS(5000)); //5s read time thats why

@@ -7,6 +7,8 @@
 
 #include "abstractions/abstractions.h"
 #include "mqtt.h"
+#include "sensor/bmetask.h"
+#include "json/json.h"
 
 const char *TAGM = "MQTT";
 static esp_mqtt_client_handle_t client;
@@ -83,4 +85,10 @@ void mqtt_publish(char* payload, const char* topic, uint8_t qos) {
     }
 
     else esp_mqtt_client_publish(client_handle, topic, payload, 0, qos, 0);
+}
+
+void bme_publish(void *pv) {
+    bme_payload_t data;
+    if(xQueueReceive(bme_queue, &data, portMAX_DELAY)) mutexPrint("BME_QUEUE", "Data received. Sending to mqtt...", 'I');
+    send_payload(data.temp, data.hum, data.pres);
 }
