@@ -11,7 +11,7 @@
 #include "json/json.h"
 
 const char *TAGM = "MQTT";
-static esp_mqtt_client_handle_t client;
+static esp_mqtt_client_handle_t client_handle = NULL;
 
 
 static void mqtt_event_callback(void *handler_args, esp_event_base_t dept, int32_t event_id, void* event_data) {
@@ -60,7 +60,6 @@ static void mqtt_event_callback(void *handler_args, esp_event_base_t dept, int32
     }
 }
 
-esp_mqtt_client_handle_t client_handle = NULL;
 void mqtt_conf() {
     //set broker
     esp_mqtt_client_config_t mqtt_config = {};

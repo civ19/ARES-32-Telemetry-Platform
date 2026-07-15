@@ -5,6 +5,8 @@ idf_component_register(
         "wifi/wifi.c"
         "abstractions/abstractions.c"
         "json/json.c"
+        "sensor/bme280.c"
+        "sensor/bmetask.c"
 
     INCLUDE_DIRS
         "."

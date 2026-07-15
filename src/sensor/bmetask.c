@@ -5,16 +5,11 @@
 #include "abstractions/abstractions.h"
 #include "freertos/semphr.h"
 #include "json/json.h"
+#include "bme280.h"
 
 QueueHandle_t bme_queue;
+bme_payload_t bme_data;
 
-typedef struct {
-    float temp;
-    float hum;
-    float pres;
-} bme_payload_t;
-
-bme_payload_t data;
 
 void bme_read_task(void* pv) {
 
@@ -30,11 +25,11 @@ void bme_read_task(void* pv) {
         int32_t adc_H = (raw_data[6] << 8)  | raw_data[7];
 
 
-        data.temp = calc_temp(adc_T, &cal); 
-        data.pres = calc_pressure(adc_P, &cal);
-        data.hum  = calc_humidity(adc_H, &cal);
+        bme_data.temp = calc_temp(adc_T, &cal); 
+        bme_data.pres = calc_pressure(adc_P, &cal);
+        bme_data.hum  = calc_humidity(adc_H, &cal);
 
-        xQueueSend(bme_queue, &data, 0); 
+        xQueueSend(bme_queue, &bme_data, 0); 
 
 
         vTaskDelay(pdMS_TO_TICKS(5000)); //5s read time thats why
