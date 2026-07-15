@@ -88,6 +88,10 @@ void mqtt_publish(char* payload, const char* topic, uint8_t qos) {
 
 void bme_publish(void *pv) {
     bme_payload_t data;
-    if(xQueueReceive(bme_queue, &data, portMAX_DELAY)) mutexPrint("BME_QUEUE", "Data received. Sending to mqtt...", 'I');
-    send_payload(data.temp, data.hum, data.pres);
+
+    for(;;) {
+        if(xQueueReceive(bme_queue, &data, portMAX_DELAY)) mutexPrint("BME_QUEUE", "Data received. Sending to mqtt...", 'I');
+        send_payload(data.temp, data.hum, data.pres);
+    }
+    
 }
