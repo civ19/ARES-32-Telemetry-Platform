@@ -11,12 +11,16 @@
 #include "abstractions/abstractions.h"
 #include "json/json.h"
 
+
 void sensor_send(void *pv) {
+    float t=0, h=0, p = 0;
+
     for(;;) {
         
-        send_payload(24.3, 51.9, 1031.2);
-        vTaskDelay(pdMS_TO_TICKS(100));
-
+        send_payload(t,p,h);
+        mutexPrint("PUBLISH", "Message sent!", 'I');
+        vTaskDelay(pdMS_TO_TICKS(1000));
+        t++, h++, p++;
     }
 }
 
