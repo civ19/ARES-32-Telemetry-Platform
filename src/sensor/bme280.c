@@ -61,8 +61,8 @@ float calc_humidity(int32_t adc_H, bme280_calib_data *c) {
 esp_err_t init_bme280() {
     i2c_master_bus_config_t bus_cfg = {
         .i2c_port = I2C_NUM_0,
-        .sda_io_num = (gpio_num_t)40, 
-        .scl_io_num = (gpio_num_t)41, 
+        .sda_io_num = (gpio_num_t)41, 
+        .scl_io_num = (gpio_num_t)42, 
         .clk_source = I2C_CLK_SRC_DEFAULT, 
         .glitch_ignore_cnt = 7,
         .flags = { .enable_internal_pullup = 1 }
