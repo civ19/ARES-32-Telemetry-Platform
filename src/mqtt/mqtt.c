@@ -83,7 +83,7 @@ void mqtt_publish(char* payload, const char* topic, uint8_t qos) {
         return;
     }
 
-    else esp_mqtt_client_publish(client_handle, topic, payload, 0, qos, 0);
+    else esp_mqtt_client_publish(client_handle, topic, payload, strlen(payload), qos, 0);
 }
 
 void bme_publish(void *pv) {
