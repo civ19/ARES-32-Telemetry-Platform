@@ -1,7 +1,12 @@
 #include "freertos/FreeRTOS.h"
+#include "freertos/queue.h"
+
 #include "bmetask.h"
 #include "abstractions/abstractions.h"
 #include "freertos/semphr.h"
+#include "json/json.h"
+
+QueueHandle_t bme_queue;
 
 void bme_read_task(void* pv) {
 
@@ -21,10 +26,11 @@ void bme_read_task(void* pv) {
         float pres = calc_pressure(adc_P, &cal);
         float hum  = calc_humidity(adc_H, &cal);
 
-        if(xSemaphoreTake(printMutex, portMAX_DELAY)) {
-            ESP_LOGI("WEATHER", "Temp: %.2f C | Hum: %.1f %% | Pres: %.1f hPa", temp, hum, pres);
-            xSemaphoreGive(printMutex);   
-        }
+        
+
+        send_payload(temp, hum, pres);
+        mutexPrint("PUBLISH", "Message sent!", 'I');
+
 
         vTaskDelay(pdMS_TO_TICKS(5000)); //5s read time thats why
     }

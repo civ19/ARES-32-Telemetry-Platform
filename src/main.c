@@ -10,19 +10,11 @@
 #include "wifi/wifi.h"
 #include "abstractions/abstractions.h"
 #include "json/json.h"
+#include "sensor/bme280.h"
+#include "sensor/bmetask.h"
 
 
-void sensor_send(void *pv) {
-    float t=0, h=0, p = 0;
 
-    for(;;) {
-        
-        send_payload(t,p,h);
-        mutexPrint("PUBLISH", "Message sent!", 'I');
-        vTaskDelay(pdMS_TO_TICKS(1000));
-        t++, h++, p++;
-    }
-}
 
 void app_main(void) {
     nvs_event_init(); //storing network config and attaching the callback functions to the events. default event loop too

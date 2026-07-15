@@ -22,6 +22,7 @@ typedef struct { //bsaically saying hey, this is the correction numbers basicall
 extern int32_t t_fine; 
 extern bme280_calib_data cal;
 extern i2c_master_bus_handle_t bme_handle;
+extern const char* TAGB;
 
 esp_err_t init_bme280();
 
