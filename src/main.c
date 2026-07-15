@@ -3,6 +3,7 @@
 #include "esp_event.h"
 #include "freertos/event_groups.h"
 #include "mqtt_client.h"
+#include "freertos/semphr.h"
 
 
 //other custom files
@@ -21,9 +22,20 @@ void app_main(void) {
 
     wifi_event_group = xEventGroupCreate();
     printMutex = xSemaphoreCreateMutex();
+    bme_queue = xQueueCreate(10, sizeof(bme_payload_t));
 
     init_wifi_hardware(); //hardware wifi conf
     wifi_conf(); //software wifi conf
+
+    if(bme_queue == NULL) {
+        mutexPrint("MAIN", "Failed to create Queue.", 'E');
+        return;
+    }
+
+    if(init_bme280() != ESP_OK) {
+        mutexPrint("MAIN", "Failed to Init BME.", 'E');
+        return;
+    }
 
 
     //gatekeeper
