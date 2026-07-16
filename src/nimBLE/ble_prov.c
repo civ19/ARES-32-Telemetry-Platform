@@ -74,6 +74,22 @@ static int gatt_svr_access_cb(uint16_t conn_handle, uint16_t attr_handle, struct
     
     switch(ctx ->op) {
         case BLE_GATT_ACCESS_OP_WRITE_CHR:
+            if(ble_uuid_cmp(ctx->chr->uuid, BLE_UUID128_DECLARE(0x2d, 0x71, 0xa1, 0x20, 0x53, 0x75, 
+                0x49, 0x73, 0xad, 0x57, 0x07, 0x72, 0xab, 0x39, 0x10, 0x12))) return ssid_write;
+            
+            if(ble_uuid_cmp(ctx->chr->uuid, BLE_UUID128_DECLARE(0x2d, 0x71, 0xa1, 0x20, 0x53, 0x75, 0x49, 0x73, 
+                        0xad, 0x57, 0x07, 0x72, 0xab, 0x39, 0x10, 0x13))) return pass_write;
+        break;
+
+        return BLE_ATT_ERR_ATTR_NOT_FOUND;
+
+        case BLE_GATT_ACCESS_OP_READ_CHR:
+            return BLE_ATT_ERR_READ_NOT_PERMITTED;
+        break;
+
+        default:
+            return BLE_ATT_ERR_UNLIKELY;
+        
 
     }
 }
