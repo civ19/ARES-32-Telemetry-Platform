@@ -25,4 +25,8 @@ public class SensorService {
                 .collect(Collectors.toList());
     }
 
+    public SensorResponse getNow() {
+
+    }
+
 }

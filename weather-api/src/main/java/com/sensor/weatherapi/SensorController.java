@@ -15,7 +15,7 @@ public class SensorController {
     private final SensorService service;
 
     @GetMapping("/api/sensors")
-    public ResponseEntity<List<SensorResponse>> getReadings() {
+    public ResponseEntity<List<SensorResponse>> getReadings24() {
         List<SensorResponse> resp = service.getAll24();
         return new ResponseEntity<List<SensorResponse>>(resp, HttpStatus.OK);
     }
