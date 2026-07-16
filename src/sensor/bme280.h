@@ -29,3 +29,4 @@ esp_err_t init_bme280();
 float calc_temp(int32_t adc_T, bme280_calib_data *cal);
 float calc_humidity(int32_t adc_H, bme280_calib_data *c);
 float calc_pressure(int32_t adc_P, bme280_calib_data* c);
+void read_calibration_data(); 

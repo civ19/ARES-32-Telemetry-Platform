@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
+@Table(name = "sensor")
 public class Sensor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

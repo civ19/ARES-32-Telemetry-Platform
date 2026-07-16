@@ -1,5 +1,7 @@
 package com.sensor.weatherapi;
 
+import jakarta.persistence.Table;
+import jdk.jfr.Name;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,12 @@ public class SensorController {
     @GetMapping("/api/sensors")
     public ResponseEntity<List<SensorResponse>> getReadings24() {
         List<SensorResponse> resp = service.getAll24();
-        return new ResponseEntity<List<SensorResponse>>(resp, HttpStatus.OK);
+        return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+
+    @GetMapping("/api/sensors/now")
+    public ResponseEntity<SensorResponse> getCurrent() {
+        SensorResponse resp = service.getNow();
+        return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 }

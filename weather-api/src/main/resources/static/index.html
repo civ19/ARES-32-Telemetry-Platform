@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,9 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ESP32 Weather Station</title>
-
     <link rel="stylesheet" href="style.css">
-    <script defer src="app.js"></script>
 </head>
 
 <body>
@@ -19,31 +16,31 @@
         <h1>ESP32 Weather Station</h1>
 
         <div class="status">
-            <span class="status-dot"></span>
-            <span>Connected</span>
+            <span class="status-dot" id="status-dot"></span>
+            <span id="status-text">Connecting...</span>
         </div>
     </header>
 
     <p class="last-update">
         Last Updated:
-        <span id="last-update">Loading...</span>
+        <span id="update-time">Loading...</span>
     </p>
 
     <section class="sensor-grid">
 
         <div class="card">
             <h2>Temperature</h2>
-            <p id="temperature">-- °C</p>
+            <p id="temp-val">-- °C</p>
         </div>
 
         <div class="card">
             <h2>Humidity</h2>
-            <p id="humidity">-- %</p>
+            <p id="hum-val">-- %</p>
         </div>
 
         <div class="card">
             <h2>Pressure</h2>
-            <p id="pressure">-- hPa</p>
+            <p id="pres-val">-- hPa</p>
         </div>
 
     </section>
@@ -53,13 +50,11 @@
         <h2>History</h2>
 
         <div class="time-buttons">
-
-            <button>1h</button>
-            <button>3h</button>
-            <button>6h</button>
-            <button>12h</button>
-            <button class="active">24h</button>
-
+            <button data-range="1h">1h</button>
+            <button data-range="3h">3h</button>
+            <button data-range="6h">6h</button>
+            <button data-range="12h">12h</button>
+            <button data-range="24h" class="active">24h</button>
         </div>
 
     </section>
@@ -72,6 +67,8 @@
 
 </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="app.js"></script>
+
 </body>
 </html>
-```

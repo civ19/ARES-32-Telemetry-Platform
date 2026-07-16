@@ -3,7 +3,6 @@ package com.sensor.weatherapi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +25,8 @@ public class SensorService {
     }
 
     public SensorResponse getNow() {
-
+        Sensor s = repo.findTopByOrderByTimestampDesc().orElseThrow(() -> new ReadingNotFoundException("Reading not found."));
+        return new SensorResponse(s.getId(), s.getTemp(), s.getHumidity(), s.getPressure());
     }
 
 }

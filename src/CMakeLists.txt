@@ -7,13 +7,16 @@ idf_component_register(
         "json/json.c"
         "sensor/bme280.c"
         "sensor/bmetask.c"
+        "nimBLE/ble_prov.c"
 
     INCLUDE_DIRS
         "."
+        "nimBLE"
 
     REQUIRES
         driver
         esp_adc
         mqtt
         cjson
+        bt
 )

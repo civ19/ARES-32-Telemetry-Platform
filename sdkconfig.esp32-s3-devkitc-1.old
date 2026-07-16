@@ -1839,16 +1839,10 @@ CONFIG_SPIRAM=y
 #
 # SPI RAM config
 #
-# default:
-CONFIG_SPIRAM_MODE_QUAD=y
-# default:
-# CONFIG_SPIRAM_MODE_OCT is not set
+# CONFIG_SPIRAM_MODE_QUAD is not set
+CONFIG_SPIRAM_MODE_OCT=y
 # default:
 CONFIG_SPIRAM_TYPE_AUTO=y
-# default:
-# CONFIG_SPIRAM_TYPE_ESPPSRAM16 is not set
-# default:
-# CONFIG_SPIRAM_TYPE_ESPPSRAM32 is not set
 # default:
 # CONFIG_SPIRAM_TYPE_ESPPSRAM64 is not set
 # default:
@@ -1862,13 +1856,13 @@ CONFIG_SPIRAM_CS_IO=26
 # default:
 # CONFIG_SPIRAM_RODATA is not set
 # default:
-# CONFIG_SPIRAM_SPEED_120M is not set
-# default:
 # CONFIG_SPIRAM_SPEED_80M is not set
 # default:
 CONFIG_SPIRAM_SPEED_40M=y
 # default:
 CONFIG_SPIRAM_SPEED=40
+# default:
+# CONFIG_SPIRAM_ECC_ENABLE is not set
 # default:
 CONFIG_SPIRAM_BOOT_HW_INIT=y
 # default:
@@ -3673,6 +3667,42 @@ CONFIG_WL_SECTOR_SIZE_4096=y
 # default:
 CONFIG_WL_SECTOR_SIZE=4096
 # end of Wear Levelling
+
+#
+# cJSON
+#
+# default:
+CONFIG_CJSON_NESTING_LIMIT=1000
+# default:
+CONFIG_CJSON_CIRCULAR_LIMIT=10000
+# end of cJSON
+
+#
+# ESP-MQTT Configurations
+#
+# default:
+CONFIG_MQTT_PROTOCOL_311=y
+# default:
+# CONFIG_MQTT_PROTOCOL_5 is not set
+# default:
+CONFIG_MQTT_TRANSPORT_SSL=y
+# default:
+CONFIG_MQTT_TRANSPORT_WEBSOCKET=y
+# default:
+CONFIG_MQTT_TRANSPORT_WEBSOCKET_SECURE=y
+# default:
+# CONFIG_MQTT_MSG_ID_INCREMENTAL is not set
+# default:
+# CONFIG_MQTT_SKIP_PUBLISH_IF_DISCONNECTED is not set
+# default:
+# CONFIG_MQTT_REPORT_DELETED_MESSAGES is not set
+# default:
+# CONFIG_MQTT_USE_CUSTOM_CONFIG is not set
+# default:
+# CONFIG_MQTT_TASK_CORE_SELECTION_ENABLED is not set
+# default:
+# CONFIG_MQTT_CUSTOM_OUTBOX is not set
+# end of ESP-MQTT Configurations
 # end of Component config
 
 # default:

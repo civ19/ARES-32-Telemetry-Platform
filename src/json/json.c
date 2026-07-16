@@ -17,7 +17,7 @@ void send_payload(float t, float h, float p) {
         cJSON_AddNumberToObject(root, "pressure", p);
 
         //stringify the root
-        char* json_str = cJSON_Print(root);
+        char* json_str = cJSON_PrintUnformatted(root);
         mqtt_publish(json_str, "esp32/data", 0);
         free(json_str);
         cJSON_Delete(root);

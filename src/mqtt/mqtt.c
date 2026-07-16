@@ -63,7 +63,8 @@ static void mqtt_event_callback(void *handler_args, esp_event_base_t dept, int32
 void mqtt_conf() {
     //set broker
     esp_mqtt_client_config_t mqtt_config = {};
-    mqtt_config.broker.address.uri = "mqtt://10.0.0.74:1883";
+    mqtt_config.broker.address.uri = "mqtt://10.0.0.74:1883",
+    mqtt_config.network.timeout_ms = 10000;
 
     //initializing mqtt client
     client_handle = esp_mqtt_client_init(&mqtt_config);

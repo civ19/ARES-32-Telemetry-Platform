@@ -6,9 +6,11 @@
 #include "freertos/semphr.h"
 #include "json/json.h"
 #include "bme280.h"
+#include "stdio.h"
 
 QueueHandle_t bme_queue;
 bme_payload_t bme_data;
+
 
 
 void bme_read_task(void* pv) {
@@ -30,7 +32,6 @@ void bme_read_task(void* pv) {
         bme_data.hum  = calc_humidity(adc_H, &cal);
 
         xQueueSend(bme_queue, &bme_data, 0); 
-
 
         vTaskDelay(pdMS_TO_TICKS(1000)); //5s read time thats why
     }
