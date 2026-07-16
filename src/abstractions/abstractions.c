@@ -26,3 +26,25 @@ void mutexPrint(const char* TAG, const char* str, char type) {
     }
 }
 
+
+void mutex_printf(const char *tag, const char *format, ...) {
+    // 1. Safety Guard: If the mutex doesn't exist yet, drop back to standard print
+    if (printMutex == NULL) {
+        vprintf(format, NULL);
+        return;
+    }
+
+    if (xSemaphoreTake(printMutex, portMAX_DELAY) == pdTRUE) {
+        
+        printf("I (%lu) %s: ", (unsigned long)xTaskGetTickCount(), tag);
+        va_list args;
+
+        va_start(args, format);
+        vprintf(format, args);
+        va_end(args);
+       
+        printf("\n");
+
+        xSemaphoreGive(printMutex);
+    }
+}

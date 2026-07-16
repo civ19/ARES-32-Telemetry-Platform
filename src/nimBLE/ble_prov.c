@@ -1,9 +1,18 @@
 #include "host/ble_hs.h"
 #include "services/gatt/ble_svc_gatt.h"
+#include <string.h>
 
+#include "abstractions/abstractions.h"
+#include "esp_log.h"
+#include "ble_prov.h"
+
+static char wifi_ssid[MAX_SSID_LEN + 1]; //ssid and pass containers
+static char wifi_pass[MAX_PASS_LEN + 1];
+
+const char *TAG = "BLE_SVR";
 
 static int gatt_svr_access_cb(uint16_t conn_handle, uint16_t attr_handle, 
-    struct ble_gatt_access_ctxt *ctxt, void* arg);
+    struct ble_gatt_access_ctxt *ctx, void* arg);
 
 
 static const struct ble_gatt_svc_def gatt_svr_svcs[] = {
@@ -15,7 +24,7 @@ static const struct ble_gatt_svc_def gatt_svr_svcs[] = {
         .characteristics = prov_features,
     },
     {.type = BLE_GATT_SVC_TYPE_END}
-
+    
 };
 
 static const struct ble_gatt_chr_def prov_features[] = {
@@ -36,4 +45,36 @@ static const struct ble_gatt_chr_def prov_features[] = {
     {.uuid = NULL} //signla to stop processing
 
 };
+
+static int ssid_write(struct os_mbuf *om) {
+    uint16_t len = OS_MBUF_PKTLEN(om); //length of the incoming packet via ble
+    if(len > MAX_SSID_LEN) return BLE_ATT_ERR_INVALID_ATTR_VALUE_LEN;
+
+    memset(wifi_ssid, 0, sizeof(wifi_ssid)); //clean slate
+    int rc = ble_hs_mbuf_to_flat(om, wifi_pass, len, NULL);
+    if (rc!=0) return BLE_ATT_ERR_UNLIKELY; //if corrupted
+
+    mutex_printf(TAG, "Successfully saved SSID", wifi_ssid);
+    return 0;
+
+}
+
+static int pass_write(struct os_mbuf* om) { //om = network packets
+    uint16_t len = OS_MBUF_PKTLEN(om);
+    if(len > MAX_PASS_LEN) return BLE_ATT_ERR_INVALID_ATTR_VALUE_LEN;
+    
+    memset(wifi_pass, 0, sizeof(wifi_pass)); //clearing the buffer
+    int rc = ble_hs_mbuf_to_flat(om, wifi_pass, len, NULL);
+    if(rc != 0) return BLE_ATT_ERR_UNLIKELY;
+    mutex_printf(TAG, "Successfully saved password", wifi_pass);
+    return 0;
+}
+
+static int gatt_svr_access_cb(uint16_t conn_handle, uint16_t attr_handle, struct ble_gatt_access_ctxt *ctx, void* arg) {
+    
+    switch(ctx ->op) {
+        case BLE_GATT_ACCESS_OP_WRITE_CHR:
+
+    }
+}
 
