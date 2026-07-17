@@ -26,7 +26,7 @@ void mutexPrint(const char* TAG, const char* str, char type) {
 }
 
 
-void mutex_log(const char *tag, const char *format, char type, ...) {
+void mutex_log(char type, const char *tag, const char *format, ...) {
     esp_log_level_t level;
     switch (type) {
         case 'E': level = ESP_LOG_ERROR;  break; 
@@ -36,25 +36,21 @@ void mutex_log(const char *tag, const char *format, char type, ...) {
         default:  level = ESP_LOG_INFO;   break;
     }
 
-    
     if (printMutex == NULL) {
         va_list args;
-        va_start(args, format);
+        va_start(args, format); 
         esp_log_writev(level, tag, format, args);
         va_end(args);
         return;
     }
 
-
     if (xSemaphoreTake(printMutex, portMAX_DELAY) == pdTRUE) {
-    
         va_list args;
-        va_start(args, format);
+        va_start(args, format); 
 
         esp_log_writev(level, tag, format, args);
 
         va_end(args);
-
         xSemaphoreGive(printMutex);
     }
 }

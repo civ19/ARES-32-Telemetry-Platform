@@ -12,7 +12,7 @@ typedef struct {
     float pres;
 } bme_payload_t;
 
-extern bme_payload_t bme_data;
+
 
 void bme_read_task(void *pv);
 

@@ -7,11 +7,13 @@ idf_component_register(
         "json/json.c"
         "sensor/bme280.c"
         "sensor/bmetask.c"
-        "nimBLE/ble_prov.c"
+        "nimble_prov/ble_gap.c"
+        "nimble_prov/ble_gatt.c"
+        "nimble_prov/ble_master.c"
 
     INCLUDE_DIRS
         "."
-        "nimBLE"
+        "nimble_prov"
 
     REQUIRES
         driver

@@ -4,29 +4,22 @@
 #include "host/ble_hs.h"
 #include "abstractions/abstractions.h"
 
-static char wifi_ssid[MAX_SSID_LEN + 1]; //ssid and pass containers
-static char wifi_pass[MAX_PASS_LEN + 1];
+
 
 const char *TAG = "BLE_SVR";
 
 static int gatt_svr_access_cb(uint16_t conn_handle, uint16_t attr_handle, 
     struct ble_gatt_access_ctxt* ctx, void* arg);
 
+static char wifi_ssid[MAX_SSID_LEN + 1]; //ssid and pass containers
+static char wifi_pass[MAX_PASS_LEN + 1];
+
+static int ssid_write(struct os_mbuf *om);
+static int pass_write(struct os_mbuf *om);
+
 void ble_app_advertise(void);
 void wifi_conf(const char *dyn_ssid, const char *dyn_pass);
 
-
-static const struct ble_gatt_svc_def gatt_svr_svcs[] = {
-    {
-        .type = BLE_GATT_SVC_TYPE_PRIMARY,
-        .uuid = BLE_UUID128_DECLARE(0x2d, 0x71, 0xa1, 0x20, 0x53, 0x75, 0x49, 0x73, //prov service
-                        0xad, 0x57, 0x07, 0x72, 0xab, 0x39, 0x10, 0x11),
-        
-        .characteristics = prov_features,
-    },
-    {.type = BLE_GATT_SVC_TYPE_END}
-    
-};
 
 static const struct ble_gatt_chr_def prov_features[] = {
     { //ssid
@@ -47,6 +40,45 @@ static const struct ble_gatt_chr_def prov_features[] = {
 
 };
 
+const struct ble_gatt_svc_def gatt_svr_svcs[] = {
+    {
+        .type = BLE_GATT_SVC_TYPE_PRIMARY,
+        .uuid = BLE_UUID128_DECLARE(0x2d, 0x71, 0xa1, 0x20, 0x53, 0x75, 0x49, 0x73, //prov service
+                        0xad, 0x57, 0x07, 0x72, 0xab, 0x39, 0x10, 0x11),
+        
+        .characteristics = prov_features,
+    },
+    {.type = BLE_GATT_SVC_TYPE_END}
+    
+};
+
+static int ssid_write(struct os_mbuf *om) {
+    uint16_t len = OS_MBUF_PKTLEN(om);
+    if (len > MAX_SSID_LEN) return BLE_ATT_ERR_INVALID_ATTR_VALUE_LEN;
+
+    memset(wifi_ssid, 0, sizeof(wifi_ssid));
+    int rc = ble_hs_mbuf_to_flat(om, wifi_ssid, len, NULL);
+    if (rc != 0) return BLE_ATT_ERR_UNLIKELY;
+
+    mutex_log('I', TAG, "Successfully saved SSID: %s", wifi_ssid);
+    return 0;
+}
+
+static int pass_write(struct os_mbuf *om) {
+    uint16_t len = OS_MBUF_PKTLEN(om);
+    if (len > MAX_PASS_LEN) return BLE_ATT_ERR_INVALID_ATTR_VALUE_LEN;
+
+    memset(wifi_pass, 0, sizeof(wifi_pass));
+    int rc = ble_hs_mbuf_to_flat(om, wifi_pass, len, NULL);
+    if (rc != 0) return BLE_ATT_ERR_UNLIKELY;
+
+    mutex_log('I', TAG, "Successfully saved password securely.");
+    
+    wifi_conf(wifi_ssid, wifi_pass);
+    return 0;
+}
+
+
 static int gatt_svr_access_cb(uint16_t conn_handle, uint16_t attr_handle, struct ble_gatt_access_ctxt *ctx, void* arg) { 
     
     switch(ctx ->op) {
@@ -66,6 +98,10 @@ static int gatt_svr_access_cb(uint16_t conn_handle, uint16_t attr_handle, struct
 
         default:
             return BLE_ATT_ERR_UNLIKELY;
+        break;
     
     }
+
+    return BLE_ATT_ERR_UNLIKELY;
+
 }

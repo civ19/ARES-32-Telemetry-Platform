@@ -9,12 +9,12 @@
 #include "stdio.h"
 
 QueueHandle_t bme_queue;
-bme_payload_t bme_data;
 
 
 
 void bme_read_task(void* pv) {
 
+    bme_payload_t bme_data;
     for(;;) {
         uint8_t raw_data[8];
         uint8_t start_reg = 0xF7; 

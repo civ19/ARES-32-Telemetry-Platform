@@ -21,14 +21,14 @@ void ble_app_advertise(void) {
     fields.name_len = strlen(dev_name);
     fields.name_is_complete = 1;
 
-    fields.uuids128 = BLE_UUID128_DECLARE(0x2d, 0x71, 0xa1, 0x20, 0x53, 0x75, 0x49, 0x73, 
-        0xad, 0x57, 0x07, 0x72, 0xab, 0x39, 0x10, 0x11),
+    fields.uuids128 = (const ble_uuid128_t *)BLE_UUID128_DECLARE(0x2d, 0x71, 0xa1, 0x20, 0x53, 0x75, 0x49, 0x73, 
+        0xad, 0x57, 0x07, 0x72, 0xab, 0x39, 0x10, 0x11);
     fields.num_uuids128 = 1;
     fields.uuids128_is_complete = 1;
 
     int rc = ble_gap_adv_set_fields(&fields);
     if(rc != 0) {
-        mutex_log("ADV", "Error setting advertisement fields. rc=%d", 'E', rc);
+        mutex_log('E', "ADV", "Error setting advertisement fields. rc=%d", rc);
         return;
     }
 
@@ -39,32 +39,32 @@ void ble_app_advertise(void) {
     ad_params.disc_mode = BLE_GAP_DISC_MODE_GEN;
 
     rc = ble_gap_adv_start(BLE_OWN_ADDR_PUBLIC, NULL, BLE_HS_FOREVER, &ad_params, ble_gap_event, NULL);
-    if(rc != 0) mutex_log("ADV", "Error setting advertisement. rc=%d", 'E', rc);
+    if(rc != 0) mutex_log('E', "ADV", "Error setting advertisement. rc=%d", rc);
     else mutexPrint("ADV", "Ble Advertising started successfully. Waiitng for phone...", 'I');
 
 }
 
-static int ble_gap_event(struct ble_gap_event *event, void* arg) { //handle for gap events 
+int ble_gap_event(struct ble_gap_event *event, void* arg) { //handle for gap events 
 
     switch (event->type) {
         case BLE_GAP_EVENT_CONNECT:
             if(event->connect.status == 0) mutexPrint("GAP", "Connection Established Successfully.", 'I');
             else {
-                mutex_log("GAP", "Event connection failed. Error status: %d. Restarting advertisement...", 'E', event->connect.status);
+                mutex_log('E', "GAP", "Event connection failed. Error status: %d. Restarting advertisement...", event->connect.status);
                 ble_app_advertise();
             }
             return 0;
         break;
 
         case BLE_GAP_EVENT_DISCONNECT:
-            mutex_log("GAP", "Disconnected from client. Error status:%d", 'W', event->disconnect.reason);
+            mutex_log('W', "GAP", "Disconnected from client. Error status:%d", event->disconnect.reason);
             ble_app_advertise();
             return 0;
         
         break;
 
         case BLE_GAP_EVENT_MTU:
-            mutex_log("GAP", "MTU size successfully negotiated %d bytes", event->mtu.value);
+            mutex_log('I', "GAP", "MTU size successfully negotiated %d bytes", event->mtu.value);
             return 0;
 
         break;
