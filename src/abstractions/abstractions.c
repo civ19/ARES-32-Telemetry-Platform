@@ -3,7 +3,6 @@
 #include "freertos/semphr.h"
 #include "esp_log.h"
 
-// Explicit linkage block for global C symbols
 
 SemaphoreHandle_t printMutex = NULL;
 
@@ -27,23 +26,34 @@ void mutexPrint(const char* TAG, const char* str, char type) {
 }
 
 
-void mutex_printf(const char *tag, const char *format, ...) {
-    // 1. Safety Guard: If the mutex doesn't exist yet, drop back to standard print
+void mutex_log(const char *tag, const char *format, char type, ...) {
+    esp_log_level_t level;
+    switch (type) {
+        case 'E': level = ESP_LOG_ERROR;  break; 
+        case 'W': level = ESP_LOG_WARN;   break;
+        case 'I': level = ESP_LOG_INFO;   break; 
+        case 'D': level = ESP_LOG_DEBUG;  break; 
+        default:  level = ESP_LOG_INFO;   break;
+    }
+
+    
     if (printMutex == NULL) {
-        vprintf(format, NULL);
+        va_list args;
+        va_start(args, format);
+        esp_log_writev(level, tag, format, args);
+        va_end(args);
         return;
     }
 
-    if (xSemaphoreTake(printMutex, portMAX_DELAY) == pdTRUE) {
-        
-        printf("I (%lu) %s: ", (unsigned long)xTaskGetTickCount(), tag);
-        va_list args;
 
+    if (xSemaphoreTake(printMutex, portMAX_DELAY) == pdTRUE) {
+    
+        va_list args;
         va_start(args, format);
-        vprintf(format, args);
+
+        esp_log_writev(level, tag, format, args);
+
         va_end(args);
-       
-        printf("\n");
 
         xSemaphoreGive(printMutex);
     }

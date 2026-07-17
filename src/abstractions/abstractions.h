@@ -6,4 +6,4 @@
 extern SemaphoreHandle_t printMutex;
 
 void mutexPrint(const char* TAG, const char* str, char type);
-void mutex_printf(const char *tag, const char *format, ...);
+void mutex_log(const char *tag, const char *format, char type, ...);
