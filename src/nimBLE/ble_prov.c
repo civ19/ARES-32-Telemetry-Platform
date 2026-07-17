@@ -12,7 +12,9 @@ static char wifi_pass[MAX_PASS_LEN + 1];
 const char *TAG = "BLE_SVR";
 
 static int gatt_svr_access_cb(uint16_t conn_handle, uint16_t attr_handle, 
-    struct ble_gatt_access_ctxt *ctx, void* arg);
+    struct ble_gatt_access_ctxt* ctx, void* arg);
+
+void ble_app_advertise(void);
 
 
 static const struct ble_gatt_svc_def gatt_svr_svcs[] = {
@@ -64,6 +66,7 @@ static int pass_write(struct os_mbuf* om) { //om = network packets
     if(len > MAX_PASS_LEN) return BLE_ATT_ERR_INVALID_ATTR_VALUE_LEN;
     
     memset(wifi_pass, 0, sizeof(wifi_pass)); //clearing the buffer
+    
     int rc = ble_hs_mbuf_to_flat(om, wifi_pass, len, NULL);
     if(rc != 0) return BLE_ATT_ERR_UNLIKELY;
     mutex_printf(TAG, "Successfully saved password", wifi_pass);
@@ -89,8 +92,45 @@ static int gatt_svr_access_cb(uint16_t conn_handle, uint16_t attr_handle, struct
 
         default:
             return BLE_ATT_ERR_UNLIKELY;
+    
+    }
+}
+
+static int ble_gap_event(struct ble_gap_event *event, void* arg) {
+
+    switch (event->type) {
+        case BLE_GAP_EVENT_CONNECT:
+            if(event->connect.status = 0) mutexPrint("GAP", "Connection Established Successfully.", 'I');
+            else {
+                mutex_printf("GAP", "Event connection failed. Error status: %d. Restarting advertisement...", event->connect.status);
+                ble_app_advertise();
+            }
+            return 0;
+        break;
+
+        case BLE_GAP_EVENT_DISCONNECT:
+            mutex_printf("GAP", "Disconnected from client. Error status:%d", event->disconnect.reason);
+            ble_app_advertise();
+            return 0;
         
+        break;
+
+        case BLE_GAP_EVENT_MTU:
+            mutex_printf("GAP", "MTU size successfully negotiated %d bytes", event->mtu.value);
+            return 0;
+
+        break;
+        
+        default:
+            return 0;
+        break;
+
+
+                
+                
 
     }
+    
+   
 }
 
