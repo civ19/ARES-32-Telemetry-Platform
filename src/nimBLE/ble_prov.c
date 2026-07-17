@@ -53,7 +53,7 @@ static int ssid_write(struct os_mbuf *om) {
     if(len > MAX_SSID_LEN) return BLE_ATT_ERR_INVALID_ATTR_VALUE_LEN;
 
     memset(wifi_ssid, 0, sizeof(wifi_ssid)); //clean slate
-    int rc = ble_hs_mbuf_to_flat(om, wifi_pass, len, NULL);
+    int rc = ble_hs_mbuf_to_flat(om, wifi_ssid, len, NULL);
     if (rc!=0) return BLE_ATT_ERR_UNLIKELY; //if corrupted
 
     mutex_log(TAG, "Successfully saved SSID", wifi_ssid);
@@ -78,10 +78,10 @@ static int gatt_svr_access_cb(uint16_t conn_handle, uint16_t attr_handle, struct
     switch(ctx ->op) {
         case BLE_GATT_ACCESS_OP_WRITE_CHR:
             if(ble_uuid_cmp(ctx->chr->uuid, BLE_UUID128_DECLARE(0x2d, 0x71, 0xa1, 0x20, 0x53, 0x75, 
-                0x49, 0x73, 0xad, 0x57, 0x07, 0x72, 0xab, 0x39, 0x10, 0x12))) return ssid_write;
+                0x49, 0x73, 0xad, 0x57, 0x07, 0x72, 0xab, 0x39, 0x10, 0x12))) return ssid_write(ctx->om);
             
             if(ble_uuid_cmp(ctx->chr->uuid, BLE_UUID128_DECLARE(0x2d, 0x71, 0xa1, 0x20, 0x53, 0x75, 0x49, 0x73, 
-                        0xad, 0x57, 0x07, 0x72, 0xab, 0x39, 0x10, 0x13))) return pass_write;
+                        0xad, 0x57, 0x07, 0x72, 0xab, 0x39, 0x10, 0x13))) return pass_write(ctx->om);
         break;
 
         return BLE_ATT_ERR_ATTR_NOT_FOUND;
@@ -131,11 +131,11 @@ void ble_app_advertise(void) {
     else mutexPrint("ADV", "Ble Advertising started successfully. Waiitng for phone...", 'I');
 
 }
-static int ble_gap_event(struct ble_gap_event *event, void* arg) {
+static int ble_gap_event(struct ble_gap_event *event, void* arg) { //handle for gap events 
 
     switch (event->type) {
         case BLE_GAP_EVENT_CONNECT:
-            if(event->connect.status = 0) mutexPrint("GAP", "Connection Established Successfully.", 'I');
+            if(event->connect.status == 0) mutexPrint("GAP", "Connection Established Successfully.", 'I');
             else {
                 mutex_log("GAP", "Event connection failed. Error status: %d. Restarting advertisement...", 'E', event->connect.status);
                 ble_app_advertise();
