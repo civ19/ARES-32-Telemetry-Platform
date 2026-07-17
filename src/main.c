@@ -25,7 +25,6 @@ void app_main(void) {
     printMutex = xSemaphoreCreateMutex();
     bme_queue = xQueueCreate(10, sizeof(bme_payload_t));
 
-    init_wifi_hardware(); //hardware wifi conf
 
     if(bme_queue == NULL || printMutex == NULL || wifi_event_group == NULL) {
         mutexPrint("MAIN", "Resource allocation failed.", 'E');
@@ -37,11 +36,16 @@ void app_main(void) {
         return;
     }
 
-    if
+    init_wifi_hardware(); //hardware wifi conf
+
+    if(init_ble_provisioning() != ESP_OK) {
+        mutexPrint("MAIN", "Failed to init BLE provisioning stack", 'E');
+        return;
+    }
 
 
     //gatekeeper
-    ESP_LOGI("\nMAIN", "Waiting for WiFi...");
+    ESP_LOGI("\nMAIN", "BLE active. Waiting for phone BT provisioning...");
     xEventGroupWaitBits(wifi_event_group, WIFI_CONNECTED_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
     ESP_LOGI("\nMAIN", "We are online!");
 

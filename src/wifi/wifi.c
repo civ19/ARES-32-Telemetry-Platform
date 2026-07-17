@@ -101,8 +101,8 @@ void init_wifi_hardware() {
 
 void wifi_conf(const char *dyn_ssid, const char *dyn_pass) {
     wifi_config_t wifi_conf = {};
-    strlcpy((char*)wifi_conf.sta.ssid, "wifi", sizeof(wifi_conf.sta.ssid));
-    strlcpy((char*)wifi_conf.sta.password, "pass", sizeof(wifi_conf.sta.password));
+    strlcpy((char*)wifi_conf.sta.ssid, dyn_ssid, sizeof(wifi_conf.sta.ssid));
+    strlcpy((char*)wifi_conf.sta.password, dyn_pass, sizeof(wifi_conf.sta.password));
 
     //set the config to the hardware
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_conf));
