@@ -98,7 +98,6 @@ float calc_humidity(int32_t adc_H, bme280_calib_data *c) {
     // 2. Bound the result to physical reality (0% to 100%)
     if (var_H > 100.0) var_H = 100.0;
     else if (var_H < 0.0) var_H = 0.0;
-    printf("%.2f", var_H);
     
     return (float)var_H;
 }

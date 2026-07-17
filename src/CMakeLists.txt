@@ -3,6 +3,7 @@ idf_component_register(
         "main.c"
         "mqtt/mqtt.c"
         "wifi/wifi.c"
+        "wifi/wifi_task.c"
         "abstractions/abstractions.c"
         "json/json.c"
         "sensor/bme280.c"

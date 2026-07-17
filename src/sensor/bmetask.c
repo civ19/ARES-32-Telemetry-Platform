@@ -33,6 +33,6 @@ void bme_read_task(void* pv) {
 
         xQueueSend(bme_queue, &bme_data, 0); 
 
-        vTaskDelay(pdMS_TO_TICKS(1000)); //5s read time thats why
+        vTaskDelay(pdMS_TO_TICKS(1000)); //1s read time thats why
     }
 }

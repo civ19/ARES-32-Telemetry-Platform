@@ -17,37 +17,45 @@ const elements = {
     buttons: document.querySelectorAll('.time-buttons button')
 };
 
-/**
- * Logic: Fetch the absolute latest reading for the top cards
- */
 const updateTelemetry = async () => {
     try {
         const res = await fetch(`${CONFIG.API_BASE}/now`);
+        if (!res.ok) throw new Error();
         const data = await res.json();
         
-        elements.temp.innerText = `${data.temp.toFixed(1)}°C`;
+        elements.temp.innerText = `${data.temperature.toFixed(1)}°C`;
         elements.hum.innerText  = `${data.humidity.toFixed(1)}%`;
-        elements.pres.innerText = `${data.pressure.toFixed(0)} hPa`;
+        elements.pres.innerText = `${data.pressure.toFixed(1)} hPa`;
         
         lastUpdate = new Date();
         setOnlineStatus(true);
         elements.timeText.innerText = lastUpdate.toLocaleTimeString();
     } catch (err) {
-        console.error("Controller Error: Telemetry fetch failed", err);
         setOnlineStatus(false);
     }
 };
 
-/**
- * Logic: Fetch the 24h list for the chart
- */
-const updateHistory = async () => {
+// Replace your updateHistory in app.js with this:
+const updateHistory = async (range = '24h') => {
     try {
-        const res = await fetch(CONFIG.API_BASE); // Standard /api/sensors list
+        const res = await fetch(`${CONFIG.API_BASE}?range=${range}`);
+        
+        if (!res.ok) {
+            // This will catch 404, 500, or 403 errors
+            throw new Error(`Server Error: ${res.status}`);
+        }
+        
         const history = await res.json();
-        renderWeatherChart(history);
+        console.log("History Data Received:", history); // Check the data format
+        
+        if (Array.isArray(history)) {
+            renderWeatherChart(history);
+        } else {
+            console.error("Data is not an array:", history);
+        }
     } catch (err) {
-        console.error("Controller Error: History fetch failed", err);
+        // This will now tell you if it's a CORS issue or a syntax error
+        console.error("Fetch History failed:", err); 
     }
 };
 
@@ -56,20 +64,21 @@ const setOnlineStatus = (isOnline) => {
     elements.statusText.innerText = isOnline ? 'System Online' : 'System Offline';
 };
 
-/**
- * Initialize Dashboard
- */
+const setupEventListeners = () => {
+    elements.buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            elements.buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            updateHistory(btn.getAttribute('data-range'));
+        });
+    });
+};
+
 const init = () => {
-    console.info("Architect: Launching Weather Dashboard Controller...");
-    
-    // Immediate load
+    setupEventListeners();
     updateTelemetry();
-    updateHistory();
-
-    // Polling backup (Fallback until WebSockets are ready)
+    updateHistory('24h');
     setInterval(updateTelemetry, 5000);
-
-    // Watchdog: If no data for 15s, mark offline
     setInterval(() => {
         if (lastUpdate && (Date.now() - lastUpdate.getTime() > CONFIG.OFFLINE_TIMEOUT_MS)) {
             setOnlineStatus(false);
@@ -77,4 +86,7 @@ const init = () => {
     }, 2000);
 };
 
-init();
+// At the bottom of app.js
+window.addEventListener('load', () => {
+    init();
+});
