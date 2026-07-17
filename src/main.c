@@ -13,6 +13,7 @@
 #include "json/json.h"
 #include "sensor/bme280.h"
 #include "sensor/bmetask.h"
+#include "nimble_prov/ble_master.h"
 
 
 
@@ -25,10 +26,9 @@ void app_main(void) {
     bme_queue = xQueueCreate(10, sizeof(bme_payload_t));
 
     init_wifi_hardware(); //hardware wifi conf
-    wifi_conf(); //software wifi conf
 
-    if(bme_queue == NULL) {
-        mutexPrint("MAIN", "Failed to create Queue.", 'E');
+    if(bme_queue == NULL || printMutex == NULL || wifi_event_group == NULL) {
+        mutexPrint("MAIN", "Resource allocation failed.", 'E');
         return;
     }
 
@@ -36,6 +36,8 @@ void app_main(void) {
         mutexPrint("MAIN", "Failed to Init BME.", 'E');
         return;
     }
+
+    if
 
 
     //gatekeeper

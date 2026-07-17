@@ -16,8 +16,6 @@ EventGroupHandle_t wifi_event_group = NULL;
 
 
 
-
-
 static uint8_t retry_ctr = 0;
 static uint8_t max_retry = 5;
 
@@ -101,10 +99,10 @@ void init_wifi_hardware() {
 
 }
 
-void wifi_conf() {
+void wifi_conf(const char *dyn_ssid, const char *dyn_pass) {
     wifi_config_t wifi_conf = {};
-    strlcpy((char*)wifi_conf.sta.ssid, "1051A", sizeof(wifi_conf.sta.ssid));
-    strlcpy((char*)wifi_conf.sta.password, "Secord1051A", sizeof(wifi_conf.sta.password));
+    strlcpy((char*)wifi_conf.sta.ssid, "wifi", sizeof(wifi_conf.sta.ssid));
+    strlcpy((char*)wifi_conf.sta.password, "pass", sizeof(wifi_conf.sta.password));
 
     //set the config to the hardware
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_conf));
