@@ -46,7 +46,7 @@ void read_calibration_data() {
     cal.dig_H2 = (int16_t)((h_buf[1] << 8) | h_buf[0]);
     cal.dig_H3 = h_buf[2];
     
-    // Fixed bit masking for proper alignment of H4 and H5 12-bit values
+    // bit masking for proper alignment of H4 and H5 12-bit values
     cal.dig_H4 = (int16_t)((int8_t)h_buf[3] << 4) | (h_buf[4] & 0x0F);
     cal.dig_H5 = (int16_t)((int8_t)h_buf[5] << 4) | ((h_buf[4] & 0xF0) >> 4);
     cal.dig_H6 = (int8_t)h_buf[6];
