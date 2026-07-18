@@ -20,6 +20,7 @@ public class SensorService {
         return new SensorResponse(updated.getId(), updated.getTemp(), updated.getHumidity(), updated.getPressure(), updated.getTimestamp());
     }
 
+    //when we do repo.findall for any we should get a sensor response. assert that the fields of the list arnet null?
     public List<SensorResponse> getAll24() {
         return repo.findAll().stream().map(sensor -> new SensorResponse(sensor.getId(), sensor.getTemp(), sensor.getHumidity(), sensor.getPressure(), sensor.getTimestamp()
         )).collect(Collectors.toList());

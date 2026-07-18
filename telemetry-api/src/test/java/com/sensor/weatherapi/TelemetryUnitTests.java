@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -38,12 +39,27 @@ public class TelemetryUnitTests {
         assertNotNull(resp.id());
         assertNotNull(resp.timestamp());
 
-        verify(repo, times(1)).save(any(Sensor.class));
+        verify(repo).save(any(Sensor.class));
 
     }
 
     @Test
     public void getAll24HappyPath() throws Exception {
+        Sensor mockS = Sensor.builder().temp(24.1).humidity(0.50).pressure(1051.2).build();
+        when(repo.save(mockS)).thenReturn(mockS); //stubbing the save
+        when(repo.findAll()).thenReturn(List.of(mockS));
+
+        List<SensorResponse> resp = service.getAll24();
+
+        assertNotNull(resp);
+        assertEquals(1, resp.size());
+        assertEquals(mockS.getId(), resp.getFirst().id());
+        assertEquals(mockS.getTemp(), resp.getFirst().temperature());
+        assertEquals(mockS.getHumidity(), resp.getFirst().humidity());
+        assertEquals(mockS.getPressure(), resp.getFirst().pressure());
+        assertEquals(mockS.getTimestamp(), resp.getFirst().timestamp());
+
+        verify(repo).save(mockS);
 
     }
 }
