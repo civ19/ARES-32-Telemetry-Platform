@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Driver Telemetry</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>ESP32 Driver Telemetry: Visualization</h1>
+            <div class="status">
+                <span class="status-dot" id="status-dot"></span>
+                <span id="status-text">Connecting...</span>
+            </div>
+        </header>
+
+        <p class="last-update">
+            Last Updated: <span id="update-time">Loading...</span>
+        </p>
+
+        <!-- Current Readings -->
+        <section class="sensor-grid">
+            <div class="card">
+                <h2>Temperature</h2>
+                <p id="temp-val">-- °C</p>
+            </div>
+            <div class="card">
+                <h2>Humidity</h2>
+                <p id="hum-val">-- %</p>
+            </div>
+            <div class="card">
+                <h2>Pressure</h2>
+                <p id="pres-val">-- hPa</p>
+            </div>
+        </section>
+
+        <!-- History & Charts -->
+        <section class="history">
+            <div class="history-header">
+                <h2>History</h2>
+                <div class="time-buttons">
+                    <button data-range="1h">1h</button>
+                    <button data-range="3h">3h</button>
+                    <button data-range="6h">6h</button>
+                    <button data-range="12h">12h</button>
+                    <button data-range="24h" class="active">24h</button>
+                </div>
+            </div>
+
+            <div class="charts-container">
+                <div class="chart-card">
+                    <h3>Temperature History (°C)</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="tempChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>Humidity History (%)</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="humChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>Pressure History (hPa)</h3>
+                    <div class="canvas-wrapper">
+                        <canvas id="presChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
