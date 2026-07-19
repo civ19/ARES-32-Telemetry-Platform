@@ -2,34 +2,38 @@ package com.sensor.weatherapi;
 
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 // Mockito (The fakes)
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
-@RequiredArgsConstructor
+@ExtendWith(MockitoExtension.class)
 public class TelemetryUnitTests {
     @Mock
-    private final SensorRepository repo;
+    private SensorRepository repo;
     @InjectMocks
-    private final SensorService service;
+    private SensorService service;
 
     @Test
     //save data is supposed to build a sensor object, save it to repo then return response. this implies
     //we do when repo.find, it gets a sensor back. after a mocks
     public void saveDataHappyPath() throws Exception {
-        Sensor mockS = Sensor.builder().temp(24.1).humidity(0.50).pressure(1051.2).build();
-        when(repo.save(any(Sensor.class))).thenReturn(mockS); //nbecaise of we save a sensor it sould return mockS
+        Sensor mockS = new Sensor(1L, 24.1, 0.5, 1051.2, Instant.now());
+        when(repo.save(any(Sensor.class))).thenAnswer(invocation -> {
+            Sensor s = invocation.getArgument(0);
+            return new Sensor(1L, 24.1, 0.5, 1051.2, Instant.now());
+        });
 
-        SensorResponse mockp = new SensorResponse(null, mockS.getTemp(), mockS.getHumidity(), mockS.getTemp(), null);
+        SensorResponse mockp = new SensorResponse(null, mockS.getTemp(), mockS.getHumidity(), mockS.getPressure(), null);
         SensorResponse resp = service.saveData(mockp);
 
         assertEquals(resp.temperature(), mockp.temperature());
@@ -45,8 +49,8 @@ public class TelemetryUnitTests {
 
     @Test
     public void getAll24HappyPath() throws Exception {
-        Sensor mockS = Sensor.builder().temp(24.1).humidity(0.50).pressure(1051.2).build();
-        when(repo.save(mockS)).thenReturn(mockS); //stubbing the save
+        Sensor mockS = new Sensor(1L, 24.1, 0.5, 1051.2, Instant.now());
+         //stubbing the save
         when(repo.findAll()).thenReturn(List.of(mockS));
 
         List<SensorResponse> resp = service.getAll24();
@@ -59,7 +63,7 @@ public class TelemetryUnitTests {
         assertEquals(mockS.getPressure(), resp.getFirst().pressure());
         assertEquals(mockS.getTimestamp(), resp.getFirst().timestamp());
 
-        verify(repo).save(mockS);
+        verify(repo).findAll();
 
     }
 }

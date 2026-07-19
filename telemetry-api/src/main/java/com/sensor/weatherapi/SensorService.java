@@ -3,6 +3,7 @@ package com.sensor.weatherapi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,8 +13,7 @@ public class SensorService {
     private final SensorRepository repo;
 
     public SensorResponse saveData(SensorResponse resp) {
-        Sensor sensor = Sensor.builder().temp(resp.temperature()).humidity(resp.humidity()).pressure(resp.pressure())
-                .build();
+        Sensor sensor = new Sensor(null, resp.temperature(), resp.humidity(), resp.pressure(), Instant.now());
 
         Sensor updated = repo.save(sensor);
 

@@ -9,11 +9,10 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
-@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
 @Table(name = "sensor")
 public class Sensor {
     @Id
@@ -30,4 +29,5 @@ public class Sensor {
     @CreationTimestamp
     @Column(updatable = false, nullable = false)
     private Instant timestamp;
+
 }
