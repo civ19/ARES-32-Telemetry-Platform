@@ -16,6 +16,8 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
+import java.util.Optional;
+
 @ExtendWith(MockitoExtension.class)
 public class TelemetryUnitTests {
     @Mock
@@ -65,6 +67,35 @@ public class TelemetryUnitTests {
 
         verify(repo).findAll();
 
+    }
+
+    @Test
+    public void getNowReturnSensorResponse() throws Exception {
+        //runs repo findtop then returns the resulting sensor response object
+        Sensor mockS = new Sensor(1L, 24.1, 0.5, 1051.2, Instant.now());
+        when(repo.findTopByOrderByTimestampDesc()).thenReturn(Optional.of(mockS));
+
+        SensorResponse resp = service.getNow();
+
+        assertNotNull(resp);
+        assertEquals(mockS.getId(), resp.id());
+        assertEquals(mockS.getTemp(), resp.temperature());
+        assertEquals(mockS.getPressure(), resp.pressure());
+        assertEquals(mockS.getTimestamp(), resp.timestamp());
+
+        verify(repo).findTopByOrderByTimestampDesc();
+        verify(repo, never()).save(mockS);
+    }
+
+    @Test
+    void getNowReturnNotFoundExceptionSad() throws Exception {
+        when(repo.findTopByOrderByTimestampDesc()).thenReturn(Optional.empty());
+
+        assertThrows(ReadingNotFoundException.class, () -> {
+            service.getNow();
+        });
+
+        verify(repo).findTopByOrderByTimestampDesc();
     }
 }
 
