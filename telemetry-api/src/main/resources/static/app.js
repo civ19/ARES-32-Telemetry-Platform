@@ -23,9 +23,9 @@ const updateTelemetry = async () => {
         if (!res.ok) throw new Error();
         const data = await res.json();
         
-        elements.temp.innerText = `${data.temperature.toFixed(1)}°C`;
-        elements.hum.innerText  = `${data.humidity.toFixed(1)}%`;
-        elements.pres.innerText = `${data.pressure.toFixed(1)} hPa`;
+        elements.temp.innerText = `${data.temperature.toFixed(2)}°C`;
+        elements.hum.innerText  = `${data.humidity.toFixed(2)}%`;
+        elements.pres.innerText = `${data.pressure.toFixed(2)} hPa`;
         
         lastUpdate = new Date();
         setOnlineStatus(true);
@@ -35,26 +35,13 @@ const updateTelemetry = async () => {
     }
 };
 
-// Replace your updateHistory in app.js with this:
 const updateHistory = async (range = '24h') => {
     try {
         const res = await fetch(`${CONFIG.API_BASE}?range=${range}`);
-        
-        if (!res.ok) {
-            // This will catch 404, 500, or 403 errors
-            throw new Error(`Server Error: ${res.status}`);
-        }
-        
+        if (!res.ok) throw new Error();
         const history = await res.json();
-        console.log("History Data Received:", history); // Check the data format
-        
-        if (Array.isArray(history)) {
-            renderWeatherChart(history);
-        } else {
-            console.error("Data is not an array:", history);
-        }
+        renderWeatherChart(history);
     } catch (err) {
-        // This will now tell you if it's a CORS issue or a syntax error
         console.error("Fetch History failed:", err); 
     }
 };
@@ -76,9 +63,12 @@ const setupEventListeners = () => {
 
 const init = () => {
     setupEventListeners();
-    updateTelemetry();
-    updateHistory('24h');
-    setInterval(updateTelemetry, 5000);
+    updateTelemetry();     
+    updateHistory('24h'); 
+    
+    setInterval(updateTelemetry, 2000);
+
+    //offline check
     setInterval(() => {
         if (lastUpdate && (Date.now() - lastUpdate.getTime() > CONFIG.OFFLINE_TIMEOUT_MS)) {
             setOnlineStatus(false);
@@ -86,7 +76,4 @@ const init = () => {
     }, 2000);
 };
 
-// At the bottom of app.js
-window.addEventListener('load', () => {
-    init();
-});
+window.addEventListener('load', init);

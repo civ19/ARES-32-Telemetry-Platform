@@ -7,7 +7,7 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    background: #0d1117; /* GitHub Dark Background */
+    background: #0d1117; 
     color: #e6edf3;
     min-height: 100vh;
     display: flex;
@@ -21,7 +21,6 @@ body {
     max-width: 1200px;
 }
 
-/* --- HEADER & STATUS --- */
 .header {
     display: flex;
     justify-content: space-between;
@@ -52,7 +51,7 @@ body {
     height: 10px;
     border-radius: 50%;
     background: #f85149;
-    /* Pulsing animation for the online status */
+
     box-shadow: 0 0 0 rgba(248, 81, 73, 0.4);
 }
 
@@ -62,7 +61,7 @@ body {
     font-size: 0.85rem;
 }
 
-/* --- TELEMETRY CARDS (Top Row) --- */
+
 .sensor-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -99,12 +98,11 @@ body {
     color: #f0f6fc;
 }
 
-/* Card Accent Borders */
 .card:nth-child(1) { border-top: 4px solid #58a6ff; }
 .card:nth-child(2) { border-top: 4px solid #3fb950; }
 .card:nth-child(3) { border-top: 4px solid #ff7b72; }
 
-/* --- HISTORY SECTION --- */
+
 .history-header {
     display: flex;
     justify-content: space-between;
@@ -148,10 +146,10 @@ body {
     box-shadow: 0 4px 12px rgba(31, 111, 235, 0.3);
 }
 
-/* --- CHARTS GRID --- */
+
 .charts-container {
     display: grid;
-    /* Professional 2-column layout */
+   
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
 }
@@ -161,14 +159,14 @@ body {
     border: 1px solid #30363d;
     border-radius: 16px;
     padding: 24px;
-    height: 420px; /* Increased height for better visibility */
+    height: 420px; 
     display: flex;
     flex-direction: column;
     position: relative;
     overflow: hidden;
 }
 
-/* Full-width "Hero" chart for the 3rd element (Pressure) */
+
 .chart-card:nth-child(3) {
     grid-column: 1 / span 2;
     height: 450px;
@@ -189,7 +187,7 @@ body {
     flex-grow: 1;
     position: relative;
     width: 100%;
-    min-height: 0; /* Fixes flexbox canvas shrinking */
+    min-height: 0;
 }
 
 canvas {
@@ -200,14 +198,14 @@ canvas {
     height: 100% !important;
 }
 
-/* --- RESPONSIVE DESIGN --- */
+
 @media (max-width: 992px) {
     .charts-container {
-        grid-template-columns: 1fr; /* Stack into 1 column on tablets/phones */
+        grid-template-columns: 1fr; 
     }
 
     .chart-card:nth-child(3) {
-        grid-column: auto; /* Reset span */
+        grid-column: auto; 
     }
 
     .header {

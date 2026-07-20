@@ -5,6 +5,7 @@ import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +18,12 @@ public class MqttListener {
     private final SensorService service;
     private final ObjectMapper objectMapper;
     private MqttClient client;
+    @Value("${mqtt.broker.url}")
+    private String brokerUrl;
 
     public void mqttConnect() throws MqttException{
-        log.info("Connecting to Mqtt Broker");
-        client = new MqttClient("tcp://10.0.0.74:1883", MqttClient.generateClientId());
+        log.info("Connecting to Mqtt Broker at: {}", brokerUrl);
+        client = new MqttClient(brokerUrl, MqttClient.generateClientId());
         client.connect();
     }
 

@@ -7,13 +7,12 @@ let instances = {
 export const renderWeatherChart = (historyData) => {
     if (!historyData || historyData.length === 0) return;
 
-    // Map labels once
+
     const labels = historyData.map(d => {
         const date = new Date(d.timestamp);
         return isNaN(date) ? '--:--' : date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     });
 
-    // Define chart configurations
     const configs = [
         { id: 'tempChart', label: 'Temperature', data: historyData.map(d => d.temperature), color: '#58a6ff' },
         { id: 'humChart', label: 'Humidity', data: historyData.map(d => d.humidity), color: '#3fb950' },
@@ -26,7 +25,7 @@ export const renderWeatherChart = (historyData) => {
 
         const ctx = canvas.getContext('2d');
         
-        // Destroy existing instance to prevent memory leaks/glitches
+        //Destroy existing instance to prevent memory leaks/glitches
         if (instances[conf.id]) {
             instances[conf.id].destroy();
         }
