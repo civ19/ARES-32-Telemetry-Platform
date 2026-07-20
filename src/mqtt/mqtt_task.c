@@ -27,7 +27,7 @@ void mqtt_prov_task(void *pv) {
 void trigger_mqtt_prov(const char* uri) {
     strlcpy((char*) dyn_mqtt_uri, uri,  sizeof(dyn_mqtt_uri));
 
-    if(mqtt_uri_handle != NULL) xTaskNotifyGive(mqtt_prov_task);
+    if(mqtt_uri_handle != NULL) xTaskNotifyGive(mqtt_uri_handle);
 
 }
 

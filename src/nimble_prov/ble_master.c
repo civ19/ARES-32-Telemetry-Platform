@@ -62,7 +62,7 @@ esp_err_t init_ble_provisioning(void) {
     }
 
     //name for dev
-    rc = ble_svc_gap_device_name_set("S3-WEATHER-STATION");
+    rc = ble_svc_gap_device_name_set("ESP32_Node");
     if(rc!=0) {
         mutex_log('E', TAGB, "Failed to apply public gap node name: rc=%d", rc);
         return ESP_FAIL;

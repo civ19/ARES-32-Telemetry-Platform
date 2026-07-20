@@ -1,4 +1,6 @@
 #pragma once
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 extern TaskHandle_t mqtt_uri_handle;
 void mqtt_prov_task(void *pv);

@@ -11,6 +11,7 @@ idf_component_register(
         "nimble_prov/ble_gap.c"
         "nimble_prov/ble_gatt.c"
         "nimble_prov/ble_master.c"
+        "mqtt/mqtt_task.c"
 
     INCLUDE_DIRS
         "."

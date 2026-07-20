@@ -40,7 +40,7 @@ void app_main(void) {
 
     init_wifi_hardware(); //hardware wifi conf
 
-    xTaskCreatePinnedToCore(wifi_connect_task, "wifiConnect", 4096, NULL, 5, &wifi_task_handle, 1);
+    xTaskCreatePinnedToCore(wifi_connect_task, "wifiConnect", 4096, NULL, 5, &wifi_task_handle, 1); 
     xTaskCreatePinnedToCore(mqtt_prov_task, "mqttUriTask", 4096, NULL, 4, &mqtt_uri_handle, 1);
     if(init_ble_provisioning() != ESP_OK) {
         mutexPrint("MAIN", "Failed to init BLE provisioning stack", 'E');
@@ -50,7 +50,7 @@ void app_main(void) {
 
     //gatekeeper
     ESP_LOGI("\nMAIN", "BLE active. Waiting for phone BT provisioning...");
-    xEventGroupWaitBits(wifi_event_group, WIFI_CONNECTED_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
+    xEventGroupWaitBits(wifi_event_group, WIFI_CONNECTED_BIT | MQTT_URI_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
     ESP_LOGI("\nMAIN", "We are online!");
 
 

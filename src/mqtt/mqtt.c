@@ -4,7 +4,7 @@
 #include "freertos/event_groups.h"
 #include "mqtt_client.h"
 
-
+#include "wifi/wifi.h"
 #include "abstractions/abstractions.h"
 #include "mqtt.h"
 #include "sensor/bmetask.h"
@@ -20,6 +20,7 @@ static void mqtt_event_callback(void *handler_args, esp_event_base_t dept, int32
         //connected and disconnected cases
         case MQTT_EVENT_CONNECTED:
             mutexPrint(TAGM, "Mqtt broker connected to ESP32.", 'I');
+            xEventGroupSetBits(wifi_event_group, MQTT_URI_BIT);
         break;
         case MQTT_EVENT_DISCONNECTED:
             mutexPrint(TAGM, "Mqtt broker disconnected from ESP32.", 'E');
