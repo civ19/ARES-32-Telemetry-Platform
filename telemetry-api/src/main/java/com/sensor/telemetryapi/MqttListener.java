@@ -1,4 +1,4 @@
-package com.sensor.weatherapi;
+package com.sensor.telemetryapi;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;

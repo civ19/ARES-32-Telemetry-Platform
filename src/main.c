@@ -15,6 +15,7 @@
 #include "sensor/bmetask.h"
 #include "nimble_prov/ble_master.h"
 #include "wifi/wifi_task.h"
+#include "mqtt/mqtt_task.h"
 
 
 
@@ -40,6 +41,7 @@ void app_main(void) {
     init_wifi_hardware(); //hardware wifi conf
 
     xTaskCreatePinnedToCore(wifi_connect_task, "wifiConnect", 4096, NULL, 5, &wifi_task_handle, 1);
+    xTaskCreatePinnedToCore(mqtt_prov_task, "mqttUriTask", 4096, NULL, 4, &mqtt_uri_handle, 1);
     if(init_ble_provisioning() != ESP_OK) {
         mutexPrint("MAIN", "Failed to init BLE provisioning stack", 'E');
         return;
@@ -51,7 +53,6 @@ void app_main(void) {
     xEventGroupWaitBits(wifi_event_group, WIFI_CONNECTED_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
     ESP_LOGI("\nMAIN", "We are online!");
 
-    mqtt_conf();
 
     xTaskCreatePinnedToCore(bme_read_task, "bmeReadTask",4096, NULL, 2, NULL, 1);
     xTaskCreatePinnedToCore(bme_publish, "bmePublishTask", 4096, NULL, 1, NULL, 1);

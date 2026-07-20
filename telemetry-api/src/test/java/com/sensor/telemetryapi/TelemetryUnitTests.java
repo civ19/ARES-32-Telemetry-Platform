@@ -1,4 +1,4 @@
-package com.sensor.weatherapi;
+package com.sensor.telemetryapi;
 
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;

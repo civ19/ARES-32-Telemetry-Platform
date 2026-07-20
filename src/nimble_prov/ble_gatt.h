@@ -5,5 +5,6 @@
 
 #define MAX_SSID_LEN 32
 #define MAX_PASS_LEN 64
+#define MAX_MQTT_LEN 64
 
 extern const struct ble_gatt_svc_def gatt_svr_svcs[];

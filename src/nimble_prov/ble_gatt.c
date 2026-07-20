@@ -9,14 +9,13 @@
 
 const char *TAG = "BLE_SVR";
 
-static int gatt_svr_access_cb(uint16_t conn_handle, uint16_t attr_handle, 
-    struct ble_gatt_access_ctxt* ctx, void* arg);
+static int gatt_svr_access_cb(uint16_t conn_handle, uint16_t attr_handle, struct ble_gatt_access_ctxt* ctx, void* arg);
 
-static char wifi_ssid[MAX_SSID_LEN + 1]; //ssid and pass containers
+static char wifi_ssid[MAX_SSID_LEN + 1]; //ssid, pass and broker containers
 static char wifi_pass[MAX_PASS_LEN + 1];
+static char mqtt_uri[MAX_MQTT_LEN + 1];
 
-static int ssid_write(struct os_mbuf *om);
-static int pass_write(struct os_mbuf *om);
+
 
 void ble_app_advertise(void);
 void wifi_conf(const char *dyn_ssid, const char *dyn_pass);
@@ -24,8 +23,7 @@ void wifi_conf(const char *dyn_ssid, const char *dyn_pass);
 
 static const struct ble_gatt_chr_def prov_features[] = {
     { //ssid
-        .uuid = BLE_UUID128_DECLARE(0x2d, 0x71, 0xa1, 0x20, 0x53, 0x75, 0x49, 0x73, 
-                        0xad, 0x57, 0x07, 0x72, 0xab, 0x39, 0x10, 0x12),
+        .uuid = BLE_UUID128_DECLARE(0x2d, 0x71, 0xa1, 0x20, 0x53, 0x75, 0x49, 0x73, 0xad, 0x57, 0x07, 0x72, 0xab, 0x39, 0x10, 0x12),
         .access_cb = gatt_svr_access_cb,
             .flags = BLE_GATT_CHR_F_WRITE,
     },
@@ -37,6 +35,14 @@ static const struct ble_gatt_chr_def prov_features[] = {
         .access_cb = gatt_svr_access_cb,
         .flags = BLE_GATT_CHR_F_WRITE,
     },
+
+    { //mqtt broker uri
+        .uuid = BLE_UUID128_DECLARE(0x1d, 0x8F, 0xbd, 0xcd, 0x82, 0x94, 0x91, 0xe8, 0xe1, 
+            0xe2, 0xb1, 0xb2, 0x9e, 0xa3, 0x67, 0xf7),
+        .access_cb = gatt_svr_access_cb,
+        .flags = BLE_GATT_CHR_F_WRITE,
+    },
+    
     {.uuid = NULL} //signla to stop processing
 
 };
@@ -75,10 +81,23 @@ static int pass_write(struct os_mbuf *om) {
 
     mutex_log('I', TAG, "Successfully saved password securely.");
     
-     trigger_wifi_provisioning(wifi_ssid, wifi_pass); 
+    trigger_wifi_provisioning(wifi_ssid, wifi_pass); 
     return 0;
 }
 
+static int mqtt_uri_write(struct os_mbuf *om) {
+    uint16_t len = OS_MBUF_PKTLEN(om); // get len, clear buf, test rc, do to flat to write
+    if(len > MAX_MQTT_LEN) return BLE_ATT_ERR_INVALID_ATTR_VALUE_LEN;
+    memset(mqtt_uri, 0, sizeof(mqtt_uri));
+
+    int rc = ble_hs_mbuf_to_flat(om, mqtt_uri, len, NULL);
+    if(rc != 0) return BLE_ATT_ERR_UNLIKELY;
+
+    mutex_log('I', TAG, "Successfully saved mqtt broker uri securely.");
+    return 0;
+
+
+}
 
 static int gatt_svr_access_cb(uint16_t conn_handle, uint16_t attr_handle, struct ble_gatt_access_ctxt *ctx, void* arg) { 
     
@@ -94,6 +113,9 @@ static int gatt_svr_access_cb(uint16_t conn_handle, uint16_t attr_handle, struct
                 0xad, 0x57, 0x07, 0x72, 0xab, 0x39, 0x10, 0x13)) == 0) {
                 return pass_write(ctx->om);
             }
+
+            if(ble_uuid_cmp(ctx->chr->uuid, BLE_UUID128_DECLARE(0x1d, 0x8F, 0xbd, 0xcd, 0x82, 0x94, 0x91, 0xe8, 0xe1, 
+            0xe2, 0xb1, 0xb2, 0x9e, 0xa3, 0x67, 0xf7))) return mqtt_uri_write(ctx->om);
 
             return BLE_ATT_ERR_ATTR_NOT_FOUND;
 

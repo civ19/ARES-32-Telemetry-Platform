@@ -1,8 +1,9 @@
-package com.sensor.weatherapi;
+package com.sensor.telemetryapi;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,24 +13,16 @@ public class SensorService {
     private final SensorRepository repo;
 
     public SensorResponse saveData(SensorResponse resp) {
-        Sensor sensor = Sensor.builder()
-                .temp(resp.temperature())
-                .humidity(resp.humidity())
-                .pressure(resp.pressure())
-                .build();
+        Sensor sensor = new Sensor(null, resp.temperature(), resp.humidity(), resp.pressure(), Instant.now());
 
         Sensor updated = repo.save(sensor);
-        // USE 'updated', NOT 'sensor' for the timestamp
+
         return new SensorResponse(updated.getId(), updated.getTemp(), updated.getHumidity(), updated.getPressure(), updated.getTimestamp());
     }
 
+    //when we do repo.findall for any we should get a sensor response. assert that the fields of the list arnet null?
     public List<SensorResponse> getAll24() {
-        return repo.findAll().stream().map(sensor -> new SensorResponse(
-                sensor.getId(),
-                sensor.getTemp(),
-                sensor.getHumidity(),
-                sensor.getPressure(),
-                sensor.getTimestamp() // Ensure this is not null in DB
+        return repo.findAll().stream().map(sensor -> new SensorResponse(sensor.getId(), sensor.getTemp(), sensor.getHumidity(), sensor.getPressure(), sensor.getTimestamp()
         )).collect(Collectors.toList());
     }
 

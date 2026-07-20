@@ -1,4 +1,4 @@
-package com.sensor.weatherapi;
+package com.sensor.telemetryapi;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;

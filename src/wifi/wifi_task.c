@@ -18,25 +18,21 @@ void wifi_connect_task(void *pv) {
     for(;;) {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY); 
         
-        // Give the BLE stack a chance to send the "Write Success" ack back to the phone
         vTaskDelay(pdMS_TO_TICKS(500)); 
 
         mutexPrint("WIFI", "Credentials received. Stopping BLE and starting WiFi...", 'I');
         
-        // Optional: Stop NimBLE to free the radio entirely
-        // nimble_port_stop(); 
         
         wifi_conf(dyn_ssid, dyn_pass);
     }
 }
 
 void trigger_wifi_provisioning(const char* ssid, const char* pass) {
-    // Copy the strings to the safe file-scope variables
+   
     strlcpy(dyn_ssid, ssid, sizeof(dyn_ssid));
     strlcpy(dyn_pass, pass, sizeof(dyn_pass));
 
-    // Tap the background worker task on the shoulder to wake it up!
     if (wifi_task_handle != NULL) {
-        xTaskNotifyGive(wifi_task_handle); // espressif/esp-idf
+        xTaskNotifyGive(wifi_task_handle);
     }
 }

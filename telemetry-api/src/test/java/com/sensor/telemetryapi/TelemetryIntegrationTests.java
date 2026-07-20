@@ -1,4 +1,4 @@
-package com.sensor.weatherapi;
+package com.sensor.telemetryapi;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,8 +24,6 @@ public class TelemetryIntegrationTests {
 
     @Autowired
     private SensorRepository repo;
-    @Autowired
-    private SensorService service;
     @Autowired
     MockMvc mockMvc;
 

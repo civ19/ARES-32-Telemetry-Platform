@@ -1,4 +1,4 @@
-package com.sensor.weatherapi;
+package com.sensor.telemetryapi;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;

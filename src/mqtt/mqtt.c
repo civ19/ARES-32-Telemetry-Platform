@@ -9,6 +9,7 @@
 #include "mqtt.h"
 #include "sensor/bmetask.h"
 #include "json/json.h"
+#include "nimble_prov/ble_gatt.h"
 
 const char *TAGM = "MQTT";
 static esp_mqtt_client_handle_t client_handle = NULL;
@@ -60,10 +61,10 @@ static void mqtt_event_callback(void *handler_args, esp_event_base_t dept, int32
     }
 }
 
-void mqtt_conf() {
+void mqtt_conf(const char* dyn_mqtt_uri) {
     //set broker
     esp_mqtt_client_config_t mqtt_config = {};
-    mqtt_config.broker.address.uri = "mqtt://10.0.0.74:1883",
+    strlcpy((char*) mqtt_config.broker.address.uri, dyn_mqtt_uri, sizeof(mqtt_config.broker.address.uri));
     mqtt_config.network.timeout_ms = 10000;
 
     //initializing mqtt client
