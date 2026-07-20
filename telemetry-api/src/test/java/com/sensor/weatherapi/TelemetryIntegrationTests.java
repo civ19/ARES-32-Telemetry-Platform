@@ -10,18 +10,16 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.util.List;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.Matchers.is;
 
-@ActiveProfiles("test")
-@SpringBootTest(properties = "spring.config.location=classpath:/application.properties")
+@SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class TelemetryIntegrationTests {
 
     @Autowired
@@ -38,18 +36,32 @@ public class TelemetryIntegrationTests {
 
     @Test
     public void getSensorsNowReturnsOkHappy() throws Exception {
-        // 1. Save data
-        Sensor sensor = new Sensor(null, 24.1, 0.5, 1051.2, Instant.now());
-        repo.save(sensor);
+        Sensor updated = repo.save(new Sensor(null, 24.1, 0.5, 1051.2, Instant.now()));
 
-        // 2. Perform request
-        mockMvc.perform(get("/api/sensors/now"))
+        mockMvc.perform(get(("/api/sensors/now"))).andExpect(status().isOk())
+                .andExpect(jsonPath("$.temperature").value(updated.getTemp()))
+                .andExpect(jsonPath("$.pressure").value(updated.getPressure()))
+                .andExpect(jsonPath("$.humidity").value(updated.getHumidity()))
+                .andExpect(jsonPath("$.timestamp").value(updated.getTimestamp().toString()));
+    }
+
+    @Test
+    public void getAll24ReturnsJsonOkHappy() throws Exception {
+        Sensor s1 = repo.save(new Sensor(null, 22.1, 0.7, 1050.1, Instant.now()));
+        List<SensorResponse> readings = List.of(new SensorResponse(s1.getId(), s1.getTemp(), s1.getHumidity(), s1.getPressure(), s1.getTimestamp()));
+
+        mockMvc.perform((get("/api/sensors")).param("range", "24"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.temperature").value(24.1))
-                .andExpect(jsonPath("$.pressure").value(1051.2))
-                .andExpect(jsonPath("$.humidity").value(0.5))
-                // This just checks that the timestamp field IS NOT NULL
-                // and is a String, avoiding all formatting/EDT/UTC headaches
-                .andExpect(jsonPath("$.timestamp").exists());
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(readings.size()))
+                .andExpect(jsonPath("$[0].temperature").value(readings.getFirst().temperature()))
+                .andExpect(jsonPath("$[0].humidity").value(readings.getFirst().humidity()))
+                .andExpect(jsonPath("$[0].pressure").value(readings.getFirst().pressure()))
+                .andExpect(jsonPath("$[0].timestamp").value(readings.getFirst().timestamp().toString()));
+    }
+
+    @Test
+    void getSensorsNowReturnNotFoundSad() throws Exception {
+        mockMvc.perform((get("/api/sensors/now"))).andExpect(status().isNotFound());
     }
 }

@@ -20,7 +20,6 @@ public class SensorController {
     private final SensorService service;
 
     @GetMapping("/api/sensors")
-// Add @RequestParam(required = false)
     public ResponseEntity<List<SensorResponse>> getReadings24(@RequestParam(required = false) String range) {
         List<SensorResponse> resp = service.getAll24();
         return new ResponseEntity<>(resp, HttpStatus.OK);
