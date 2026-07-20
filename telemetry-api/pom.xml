@@ -30,7 +30,7 @@
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
-		<!-- Standard Spring Boot Starters (Versions are managed by the Parent) -->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -44,7 +44,6 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
-		<!-- MQTT/Integration -->
 		<dependency>
 			<groupId>org.eclipse.paho</groupId>
 			<artifactId>org.eclipse.paho.client.mqttv3</artifactId>
@@ -63,7 +62,6 @@
 			<artifactId>spring-integration-jpa</artifactId>
 		</dependency>
 
-		<!-- DB -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -75,8 +73,6 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!-- THE ONLY TEST DEPENDENCY YOU NEED -->
-		<!-- This includes Mockito, JUnit 5, and Assertions for Web/JPA -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -86,6 +82,17 @@
 			<groupId>org.springframework.integration</groupId>
 			<artifactId>spring-integration-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
 	</dependencies>
 

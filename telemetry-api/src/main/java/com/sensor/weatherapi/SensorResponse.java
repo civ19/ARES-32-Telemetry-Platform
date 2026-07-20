@@ -10,5 +10,6 @@ public record SensorResponse (Long id,
                               @JsonProperty("temperature") Double temperature,
                               Double humidity,
                               Double pressure,
+                              @JsonFormat(shape = JsonFormat.Shape.STRING)
                               Instant timestamp){
 }
