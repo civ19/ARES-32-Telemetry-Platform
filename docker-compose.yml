@@ -1,0 +1,48 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: telemetry_user
+      POSTGRES_PASSWORD: telemetry_password
+      POSTGRES_DB: telemetry_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ares-network
+
+
+  app:
+    build: ./backend/telemetry-api
+    container_name: ares-backend
+    environment:
+      # This matches the names we gave to the 'db' service above
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/telemetry_db
+      SPRING_DATASOURCE_USERNAME: telemetry_user
+      SPRING_DATASOURCE_PASSWORD: telemetry_password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+    ports:
+    - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - ares-network
+
+  mcp-gateway:
+    build: ./ares-mcp-gateway
+    container_name: ares-mcp-bridge
+    environment:
+      BACKEND_URL: http://app:8080/api/sensors
+    ports:
+      - "8000:8000"
+    depends_on:
+      - app
+    networks:
+      - ares-network
+
+networks:
+  ares-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

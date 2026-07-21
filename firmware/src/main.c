@@ -1,0 +1,65 @@
+#include "esp_log.h"
+#include "freertos/FreeRTOS.h"
+#include "esp_event.h"
+#include "freertos/event_groups.h"
+#include "mqtt_client.h"
+#include "freertos/semphr.h"
+
+
+//other custom files
+#include "mqtt/mqtt.h"
+#include "wifi/wifi.h"
+#include "abstractions/abstractions.h"
+#include "json/json.h"
+#include "sensor/bme280.h"
+#include "sensor/bmetask.h"
+#include "nimble_prov/ble_master.h"
+#include "wifi/wifi_task.h"
+#include "mqtt/mqtt_task.h"
+
+
+
+
+void app_main(void) {
+    nvs_event_init(); 
+
+    wifi_event_group = xEventGroupCreate();
+    printMutex = xSemaphoreCreateMutex();
+    bme_queue = xQueueCreate(10, sizeof(bme_payload_t));
+
+
+    if(bme_queue == NULL || printMutex == NULL || wifi_event_group == NULL) {
+        mutexPrint("MAIN", "Resource allocation failed.", 'E');
+        return;
+    }
+
+    if(init_bme280() != ESP_OK) {
+        mutexPrint("MAIN", "Failed to Init BME.", 'E');
+        return;
+    }
+
+    init_wifi_hardware(); //hardware wifi conf
+
+    xTaskCreatePinnedToCore(wifi_connect_task, "wifiConnect", 4096, NULL, 5, &wifi_task_handle, 1); 
+    xTaskCreatePinnedToCore(mqtt_prov_task, "mqttUriTask", 4096, NULL, 4, &mqtt_uri_handle, 1);
+    if(init_ble_provisioning() != ESP_OK) {
+        mutexPrint("MAIN", "Failed to init BLE provisioning stack", 'E');
+        return;
+    }
+
+
+    //gatekeeper
+    ESP_LOGI("MAIN", "BLE active. Waiting for wifi BT provisioning...");
+    xEventGroupWaitBits(wifi_event_group, WIFI_CONNECTED_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
+    ESP_LOGI("MAIN", "Wifi set. Waiting for MQTT BT provisioning...");
+    xEventGroupWaitBits(wifi_event_group, MQTT_URI_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
+    ESP_LOGI("MAIN", "We are online!");
+
+
+    xTaskCreatePinnedToCore(bme_read_task, "bmeReadTask",4096, NULL, 2, NULL, 1);
+    xTaskCreatePinnedToCore(bme_publish, "bmePublishTask", 4096, NULL, 1, NULL, 1);
+    
+
+
+    
+}
