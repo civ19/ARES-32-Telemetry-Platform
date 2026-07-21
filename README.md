@@ -39,7 +39,7 @@ The platform is architected as a decoupled multi-service environment:
 
 ---
 
-## 🚀 Quick Start (Production Sandbox)
+## Quick Start (Production Sandbox)
 
 The entire backend infrastructure is containerized for "One-Command" deployment:
 
