@@ -1,0 +1,3 @@
+backend/api/src/main/resources/static/**/*.html linguist-documentation=false
+backend/api/src/main/resources/static/**/*.js linguist-vendor=false
+backend/api/src/main/resources/static/**/*.css linguist-vendor=false
