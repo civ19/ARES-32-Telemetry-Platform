@@ -39,14 +39,3 @@ The platform is architected as a decoupled multi-service environment:
 
 ---
 
-## Quick Start (Production Sandbox)
-
-The entire backend infrastructure is containerized for "One-Command" deployment:
-
-```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/ARES-32-Platform.git
-cd ARES-32-Platform
-
-# Launch the integrated stack (Postgres, Spring Boot, MCP Gateway)
-docker-compose up --build
