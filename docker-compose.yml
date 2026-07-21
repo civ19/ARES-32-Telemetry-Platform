@@ -1,15 +1,18 @@
 services:
   db:
-    image: postgres:18-alpine
+    image: postgres:17-alpine
     environment:
       POSTGRES_USER: telemetry_user
       POSTGRES_PASSWORD: telemetry_password
       POSTGRES_DB: telemetry_db
-    ports:
-      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ares-network
+
 
   app:
-    build: .
+    build: ./backend/telemetry-api
     ports:
       - "8080:8080"
     environment:
@@ -20,3 +23,5 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     depends_on:
       - db
+    networks:
+      - ares-network
