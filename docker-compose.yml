@@ -39,3 +39,10 @@ services:
       - app
     networks:
       - ares-network
+
+networks:
+  ares-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
