@@ -9,7 +9,7 @@
 
 ---
 
-## 🏗 System Architecture
+## System Architecture
 
 The platform is architected as a decoupled multi-service environment:
 
@@ -20,7 +20,7 @@ The platform is architected as a decoupled multi-service environment:
 
 ---
 
-## 🛠 Technical Features
+## Technical Features
 
 ### 1. Embedded Systems & RTOS (The "Metal")
 *   **Bare-Metal Drivers:** Custom I2C implementation for the Bosch BME280, featuring manual register mapping and factory calibration coefficient compensation logic.
