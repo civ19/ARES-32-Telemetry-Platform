@@ -21,7 +21,7 @@
 
 
 void app_main(void) {
-    nvs_event_init(); //storing network config and attaching the callback functions to the events. default event loop too
+    nvs_event_init(); 
 
     wifi_event_group = xEventGroupCreate();
     printMutex = xSemaphoreCreateMutex();
@@ -49,9 +49,11 @@ void app_main(void) {
 
 
     //gatekeeper
-    ESP_LOGI("\nMAIN", "BLE active. Waiting for phone BT provisioning...");
-    xEventGroupWaitBits(wifi_event_group, WIFI_CONNECTED_BIT | MQTT_URI_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
-    ESP_LOGI("\nMAIN", "We are online!");
+    ESP_LOGI("MAIN", "BLE active. Waiting for wifi BT provisioning...");
+    xEventGroupWaitBits(wifi_event_group, WIFI_CONNECTED_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
+    ESP_LOGI("MAIN", "Wifi set. Waiting for MQTT BT provisioning...");
+    xEventGroupWaitBits(wifi_event_group, MQTT_URI_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
+    ESP_LOGI("MAIN", "We are online!");
 
 
     xTaskCreatePinnedToCore(bme_read_task, "bmeReadTask",4096, NULL, 2, NULL, 1);

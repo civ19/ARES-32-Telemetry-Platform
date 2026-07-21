@@ -12,14 +12,12 @@ void ble_app_advertise(void) {
     struct ble_hs_adv_fields fields;
     memset(&fields, 0, sizeof(fields));
 
-    // General discovery and power efficiency switches
     fields.flags = BLE_HS_ADV_F_DISC_GEN | BLE_HS_ADV_F_BREDR_UNSUP;
 
-    // Fixed configuration parameters for naming broadcast metrics
     const char *dev_name = "ESP32_Node";
     fields.name = (uint8_t *)dev_name;
     fields.name_len = strlen(dev_name);
-    fields.name_is_complete = 1; // Tells iOS this is the full string name
+    fields.name_is_complete = 1;
 
     int rc = ble_gap_adv_set_fields(&fields);
     if(rc != 0) {
@@ -31,11 +29,10 @@ void ble_app_advertise(void) {
     memset(&resp_fields, 0, sizeof(resp_fields));
 
     resp_fields.uuids128 = (const ble_uuid128_t *)BLE_UUID128_DECLARE(0x2d, 0x71, 0xa1, 0x20, 0x53, 0x75, 0x49, 0x73, 
-                                                                     0xad, 0x57, 0x07, 0x72, 0xab, 0x39, 0x10, 0x11);
+        0xad, 0x57, 0x07, 0x72, 0xab, 0x39, 0x10, 0x11);
     resp_fields.num_uuids128 = 1;
     resp_fields.uuids128_is_complete = 1;
 
-    // Verified Scan Response handler execution function hook
     rc = ble_gap_adv_rsp_set_fields(&resp_fields);
     if(rc != 0) {
         mutex_log('E', "ADV", "Error setting scan response fields. rc=%d", rc);
@@ -60,7 +57,7 @@ int ble_gap_event(struct ble_gap_event *event, void* arg) { //handle for gap eve
 
     switch (event->type) {
         case BLE_GAP_EVENT_CONNECT:
-            if(event->connect.status == 0) mutexPrint("GAP", "Connection Established Successfully.", 'I');
+            if(event->connect.status == 0) mutexPrint("GAP", "BLE Smartphone Link Established. Ready for provisioning...", 'I');
             else {
                 mutex_log('E', TAG, "Event connection failed. Error status: %d. Restarting advertisement...", event->connect.status);
                 ble_app_advertise();

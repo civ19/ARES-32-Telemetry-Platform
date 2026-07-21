@@ -19,8 +19,8 @@ static void mqtt_event_callback(void *handler_args, esp_event_base_t dept, int32
     switch(event_id) {
         //connected and disconnected cases
         case MQTT_EVENT_CONNECTED:
-            mutexPrint(TAGM, "Mqtt broker connected to ESP32.", 'I');
             xEventGroupSetBits(wifi_event_group, MQTT_URI_BIT);
+            mutexPrint(TAGM, "Mqtt broker connected to ESP32.", 'I');
         break;
         case MQTT_EVENT_DISCONNECTED:
             mutexPrint(TAGM, "Mqtt broker disconnected from ESP32.", 'E');
@@ -28,7 +28,7 @@ static void mqtt_event_callback(void *handler_args, esp_event_base_t dept, int32
 
         //data cases
         case MQTT_EVENT_DATA: {
-            //when data comes in, we take it from event data then show topic and then show message
+        
             esp_mqtt_event_t *payload = (esp_mqtt_event_t *)event_data;
             if(xSemaphoreTake(printMutex, portMAX_DELAY)) {
                 ESP_LOGI(TAGM, "Topic: %.*s", payload->topic_len, payload->topic);
@@ -63,20 +63,27 @@ static void mqtt_event_callback(void *handler_args, esp_event_base_t dept, int32
 }
 
 void mqtt_conf(const char* dyn_mqtt_uri) {
-    //set broker
-    esp_mqtt_client_config_t mqtt_config = {};
-    strlcpy((char*) mqtt_config.broker.address.uri, dyn_mqtt_uri, sizeof(mqtt_config.broker.address.uri));
-    mqtt_config.network.timeout_ms = 10000;
+    //the config but with the nimble, that way i dont have to hardocde
+    esp_mqtt_client_config_t mqtt_config = {
+        .broker.address.uri = dyn_mqtt_uri,
+        .network.timeout_ms = 10000,
+    };
 
-    //initializing mqtt client
+    ESP_LOGI(TAGM, "Initializing client for URI: %s", dyn_mqtt_uri);
+
     client_handle = esp_mqtt_client_init(&mqtt_config);
-    //start mqtt
-    ESP_ERROR_CHECK(esp_mqtt_client_start(client_handle)); //starts the connection process from esp to mqtt broker
-    mutexPrint(TAGM, "Mqtt Started.", 'I');
-    //add instance register
+    if (client_handle == NULL) {
+        ESP_LOGE(TAGM, "Failed to init mqtt handle");
+        return;
+    }
 
-    ESP_ERROR_CHECK(esp_mqtt_client_register_event(client_handle, (esp_mqtt_event_id_t) ESP_EVENT_ANY_ID, mqtt_event_callback, NULL));
+    ESP_ERROR_CHECK(esp_mqtt_client_register_event(client_handle, ESP_EVENT_ANY_ID, mqtt_event_callback, NULL));
 
+
+    ESP_LOGI(TAGM, "Starting client...");
+    ESP_ERROR_CHECK(esp_mqtt_client_start(client_handle));
+    
+    ESP_LOGI(TAGM, "Mqtt Start command issued successfully.");
 }
 
 void mqtt_publish(char* payload, const char* topic, uint8_t qos) {

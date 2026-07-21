@@ -4,6 +4,7 @@
 #include "host/ble_hs.h"
 #include "abstractions/abstractions.h"
 #include "wifi/wifi_task.h"
+#include "mqtt/mqtt_task.h"
 
 
 
@@ -86,7 +87,7 @@ static int pass_write(struct os_mbuf *om) {
 }
 
 static int mqtt_uri_write(struct os_mbuf *om) {
-    uint16_t len = OS_MBUF_PKTLEN(om); // get len, clear buf, test rc, do to flat to write
+    uint16_t len = OS_MBUF_PKTLEN(om); // getting len, clear buf, test rc, do to flat to write
     if(len > MAX_MQTT_LEN) return BLE_ATT_ERR_INVALID_ATTR_VALUE_LEN;
     memset(mqtt_uri, 0, sizeof(mqtt_uri));
 
@@ -94,6 +95,7 @@ static int mqtt_uri_write(struct os_mbuf *om) {
     if(rc != 0) return BLE_ATT_ERR_UNLIKELY;
 
     mutex_log('I', TAG, "Successfully saved mqtt broker uri securely.");
+    trigger_mqtt_prov(mqtt_uri);
     return 0;
 
 
@@ -115,7 +117,7 @@ static int gatt_svr_access_cb(uint16_t conn_handle, uint16_t attr_handle, struct
             }
 
             if(ble_uuid_cmp(ctx->chr->uuid, BLE_UUID128_DECLARE(0x1d, 0x8F, 0xbd, 0xcd, 0x82, 0x94, 0x91, 0xe8, 0xe1, 
-            0xe2, 0xb1, 0xb2, 0x9e, 0xa3, 0x67, 0xf7))) return mqtt_uri_write(ctx->om);
+            0xe2, 0xb1, 0xb2, 0x9e, 0xa3, 0x67, 0xf7)) == 0) return mqtt_uri_write(ctx->om);
 
             return BLE_ATT_ERR_ATTR_NOT_FOUND;
 

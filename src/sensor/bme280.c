@@ -84,10 +84,9 @@ float calc_pressure(int32_t adc_P, bme280_calib_data* c) {
 }
 
 float calc_humidity(int32_t adc_H, bme280_calib_data *c) {
-    // 1. Convert to double for precision - avoids all integer overflow issues
     double var_H;
     
-    // The Bosch formula translated for a modern CPU
+    //bosch based calculations
     var_H = (((double)t_fine) - 76800.0);
     var_H = (adc_H - (((double)c->dig_H4) * 64.0 + ((double)c->dig_H5) / 16384.0 * var_H)) *
             (((double)c->dig_H2) / 65536.0 * (1.0 + ((double)c->dig_H6) / 67108864.0 * var_H *
@@ -95,7 +94,6 @@ float calc_humidity(int32_t adc_H, bme280_calib_data *c) {
             
     var_H = var_H * (1.0 - ((double)c->dig_H1) * var_H / 524288.0);
     
-    // 2. Bound the result to physical reality (0% to 100%)
     if (var_H > 100.0) var_H = 100.0;
     else if (var_H < 0.0) var_H = 0.0;
     
@@ -124,13 +122,11 @@ esp_err_t init_bme280() {
 
     read_calibration_data(); 
 
-    // 1. MUST write humidity control register first
-    uint8_t hum_cmd[2] = {0xF2, 0x01}; // Humidity oversampling x1
+    uint8_t hum_cmd[2] = {0xF2, 0x01};
     i2c_master_transmit(bme_handle, hum_cmd, 2, -1);
     
-    vTaskDelay(pdMS_TO_TICKS(10)); // Tiny structural delay for safety
-
-    // 2. Transmit to ctrl_meas with 0x2F to commit previous register changes AND set normal mode
+    vTaskDelay(pdMS_TO_TICKS(10)); 
+    
     uint8_t start_cmd[2] = {BME_CTRL_MEAS_REG, 0x2F}; 
     ret = i2c_master_transmit(bme_handle, start_cmd, 2, -1);
     
