@@ -7,7 +7,7 @@
 
 **ARES-32** (Asynchronous Remote Environmental Sensing) is a distributed telemetry platform designed for high-concurrency data acquisition and FastMCP integration. This project features a full-vertical stack: a custom C driver for Bosch sensors, a multi-core FreeRTOS firmware architecture, and a containerized Spring Boot backend exposed to agentic models via the Model Context Protocol (MCP).
 
-<img width="2536" height="1243" alt="image" src="https://github.com/user-attachments/assets/f1a55be7-b1ad-43e8-99b9-27a9196aa05b" />
+<img width="2536" height="1243" alt="image" src="https://github.com/user-attachments/assets/ba5c24a4-20bb-4a99-a91c-595eae3a806d" />
 
 ---
 
