@@ -20,6 +20,8 @@ The platform is architected as a decoupled, multi-service environment:
 3.  **Intelligence Bridge (`/gateway`):** Python-based FastMCP server that exposes real-time hardware telemetry to AI Agents (Claude/GPT-4).
 4.  **Orchestration (`/`):** Unified Docker-Compose environment for reproducible, sandbox-ready deployment.
 
+<img width="1248" height="630" alt="image" src="https://github.com/user-attachments/assets/148d86ae-78d3-4c78-b3a1-70940897ae57" />
+
 ---
 
 ## Technical Features
