@@ -20,8 +20,6 @@ The platform is architected as a decoupled, multi-service environment:
 3.  **Intelligence Bridge (`/gateway`):** Python-based FastMCP server that exposes real-time hardware telemetry to AI Agents (Claude/GPT-4).
 4.  **Orchestration (`/`):** Unified Docker-Compose environment for reproducible, sandbox-ready deployment.
 
-<img width="1248" height="630" alt="image" src="https://github.com/user-attachments/assets/148d86ae-78d3-4c78-b3a1-70940897ae57" />
-
 ---
 
 ## Technical Features
@@ -30,6 +28,7 @@ The platform is architected as a decoupled, multi-service environment:
 *   **Custom Sensor Driver:** Developed a C-based I2C driver for the Bosch BME280, implementing manual register mapping and factory calibration coefficient compensation logic directly from the datasheet.
 *   **FreeRTOS Task Management:** Leveraged a multi-threaded architecture using **Task Notifications** for event-driven synchronization and **Queues** for thread-safe IPC between acquisition and network tasks.
 *   **Resource Protection:** Implemented **Mutex-guarded hardware abstraction** for thread-safe logging and UART access across dual-core execution environments.
+<img width="1914" height="980" alt="image" src="https://github.com/user-attachments/assets/8883707c-450c-46d3-91d1-1d7a82a7d98a" />
 
 ### 2. Network & Industrial Protocols
 *   **MQTT Pipeline:** Architected a robust telemetry pipeline using **MQTT and cJSON** for structured data serialization, enabling low-latency communication between edge nodes and the backend.
@@ -42,6 +41,6 @@ The platform is architected as a decoupled, multi-service environment:
 ### 3. Containerization
 *   **Dockerized Infrastructure:** Full containerization of the backend and gateway services to ensure stability and reproducibility in isolated sandbox environments.
 
-*   <img width="1914" height="980" alt="image" src="https://github.com/user-attachments/assets/8883707c-450c-46d3-91d1-1d7a82a7d98a" />
+<img width="1248" height="630" alt="image" src="https://github.com/user-attachments/assets/148d86ae-78d3-4c78-b3a1-70940897ae57" />
 
 ---
