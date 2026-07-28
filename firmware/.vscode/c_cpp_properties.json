@@ -8,12 +8,12 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "C:/Summer_2026/Embedded/ESP32/Projects/ESP_Telemetry/include",
-                "C:/Summer_2026/Embedded/ESP32/Projects/ESP_Telemetry/src",
+                "C:/Summer_2026/Embedded/ESP32/Projects/ARES-32-Platform/firmware/include",
+                "C:/Summer_2026/Embedded/ESP32/Projects/ARES-32-Platform/firmware/src",
                 "C:/Users/ronal/.platformio/packages/framework-espidf/components/xtensa/esp32s3/include",
                 "C:/Users/ronal/.platformio/packages/framework-espidf/components/xtensa/include",
                 "C:/Users/ronal/.platformio/packages/framework-espidf/components/xtensa/deprecated_include",
-                "C:/Summer_2026/Embedded/ESP32/Projects/ESP_Telemetry/.pio/build/esp32-s3-devkitc-1/config",
+                "C:/Summer_2026/Embedded/ESP32/Projects/ARES-32-Platform/firmware/.pio/build/esp32-s3-devkitc-1/config",
                 "C:/Users/ronal/.platformio/packages/framework-espidf/components/esp_libc/platform_include",
                 "C:/Users/ronal/.platformio/packages/framework-espidf/components/freertos/config/include",
                 "C:/Users/ronal/.platformio/packages/framework-espidf/components/freertos/config/include/freertos",
@@ -277,20 +277,20 @@
                 "C:/Users/ronal/.platformio/packages/framework-espidf/components/perfmon/include",
                 "C:/Users/ronal/.platformio/packages/framework-espidf/components/rt/include",
                 "C:/Users/ronal/.platformio/packages/framework-espidf/components/spiffs/include",
-                "C:/Summer_2026/Embedded/ESP32/Projects/ESP_Telemetry/managed_components/espressif__mqtt/include",
-                "C:/Summer_2026/Embedded/ESP32/Projects/ESP_Telemetry/managed_components/espressif__cjson/cJSON",
-                "C:/Summer_2026/Embedded/ESP32/Projects/ESP_Telemetry/src/nimble_prov",
+                "C:/Summer_2026/Embedded/ESP32/Projects/ARES-32-Platform/firmware/managed_components/espressif__mqtt/include",
+                "C:/Summer_2026/Embedded/ESP32/Projects/ARES-32-Platform/firmware/managed_components/espressif__cjson/cJSON",
+                "C:/Summer_2026/Embedded/ESP32/Projects/ARES-32-Platform/firmware/src/nimble_prov",
                 ""
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "C:/Summer_2026/Embedded/ESP32/Projects/ESP_Telemetry/include",
-                    "C:/Summer_2026/Embedded/ESP32/Projects/ESP_Telemetry/src",
+                    "C:/Summer_2026/Embedded/ESP32/Projects/ARES-32-Platform/firmware/include",
+                    "C:/Summer_2026/Embedded/ESP32/Projects/ARES-32-Platform/firmware/src",
                     "C:/Users/ronal/.platformio/packages/framework-espidf/components/xtensa/esp32s3/include",
                     "C:/Users/ronal/.platformio/packages/framework-espidf/components/xtensa/include",
                     "C:/Users/ronal/.platformio/packages/framework-espidf/components/xtensa/deprecated_include",
-                    "C:/Summer_2026/Embedded/ESP32/Projects/ESP_Telemetry/.pio/build/esp32-s3-devkitc-1/config",
+                    "C:/Summer_2026/Embedded/ESP32/Projects/ARES-32-Platform/firmware/.pio/build/esp32-s3-devkitc-1/config",
                     "C:/Users/ronal/.platformio/packages/framework-espidf/components/esp_libc/platform_include",
                     "C:/Users/ronal/.platformio/packages/framework-espidf/components/freertos/config/include",
                     "C:/Users/ronal/.platformio/packages/framework-espidf/components/freertos/config/include/freertos",
@@ -554,9 +554,9 @@
                     "C:/Users/ronal/.platformio/packages/framework-espidf/components/perfmon/include",
                     "C:/Users/ronal/.platformio/packages/framework-espidf/components/rt/include",
                     "C:/Users/ronal/.platformio/packages/framework-espidf/components/spiffs/include",
-                    "C:/Summer_2026/Embedded/ESP32/Projects/ESP_Telemetry/managed_components/espressif__mqtt/include",
-                    "C:/Summer_2026/Embedded/ESP32/Projects/ESP_Telemetry/managed_components/espressif__cjson/cJSON",
-                    "C:/Summer_2026/Embedded/ESP32/Projects/ESP_Telemetry/src/nimble_prov",
+                    "C:/Summer_2026/Embedded/ESP32/Projects/ARES-32-Platform/firmware/managed_components/espressif__mqtt/include",
+                    "C:/Summer_2026/Embedded/ESP32/Projects/ARES-32-Platform/firmware/managed_components/espressif__cjson/cJSON",
+                    "C:/Summer_2026/Embedded/ESP32/Projects/ARES-32-Platform/firmware/src/nimble_prov",
                     ""
                 ]
             },
@@ -586,7 +586,7 @@
             "cppStandard": "gnu++26",
             "compilerPath": "C:/Users/ronal/.platformio/packages/toolchain-xtensa-esp-elf/bin/xtensa-esp32s3-elf-gcc.exe",
             "compilerArgs": [
-                "@C:/Summer_2026/Embedded/ESP32/Projects/ESP_Telemetry/.pio/build/esp32-s3-devkitc-1/toolchain/cflags",
+                "@C:/Summer_2026/Embedded/ESP32/Projects/ARES-32-Platform/firmware/.pio/build/esp32-s3-devkitc-1/toolchain/cflags",
                 ""
             ]
         }
