@@ -29,6 +29,7 @@ The platform is architected as a decoupled, multi-service environment:
 *   **FreeRTOS Task Management:** Leveraged a multi-threaded architecture using **Task Notifications** for event-driven synchronization and **Queues** for thread-safe IPC between acquisition and network tasks.
 *   **Resource Protection:** Implemented **Mutex-guarded hardware abstraction** for thread-safe logging and UART access across dual-core execution environments.
 
+<img width="828" height="1792" alt="image" src="https://github.com/user-attachments/assets/deedbe0d-5c37-43ea-bb0b-4db21c4fe29c" />
 
 ### 2. Network & Industrial Protocols
 *   **MQTT Pipeline:** Architected a robust telemetry pipeline using **MQTT and cJSON** for structured data serialization, enabling low-latency communication between edge nodes and the backend.
