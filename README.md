@@ -7,7 +7,7 @@
 
 **ARES-32** (Asynchronous Remote Environmental Sensing) is a distributed telemetry platform designed for high-concurrency data acquisition and FastMCP integration. This project features a full-vertical stack: a custom C driver for Bosch sensors, a multi-core FreeRTOS firmware architecture, and a containerized Spring Boot backend exposed to agentic models via the Model Context Protocol (MCP).
 
-<img width="800" alt="driver_telemetry" src="https://github.com/user-attachments/assets/755c3876-32fb-46ab-87bb-e8f6438e7d27" />
+<img width="1600" height="756" alt="image" src="https://github.com/user-attachments/assets/a6e501f4-8f5a-4244-9db8-a453a97e5bab" />
 
 ---
 
@@ -29,7 +29,7 @@ The platform is architected as a decoupled, multi-service environment:
 *   **FreeRTOS Task Management:** Leveraged a multi-threaded architecture using **Task Notifications** for event-driven synchronization and **Queues** for thread-safe IPC between acquisition and network tasks.
 *   **Resource Protection:** Implemented **Mutex-guarded hardware abstraction** for thread-safe logging and UART access across dual-core execution environments.
 
-<img width="828" height="1792" alt="image" src="https://github.com/user-attachments/assets/deedbe0d-5c37-43ea-bb0b-4db21c4fe29c" />
+<img width="414" alt="image" src="https://github.com/user-attachments/assets/deedbe0d-5c37-43ea-bb0b-4db21c4fe29c" />
 
 ### 2. Network & Industrial Protocols
 *   **MQTT Pipeline:** Architected a robust telemetry pipeline using **MQTT and cJSON** for structured data serialization, enabling low-latency communication between edge nodes and the backend.
