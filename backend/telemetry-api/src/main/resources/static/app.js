@@ -23,9 +23,9 @@ const updateTelemetry = async () => {
         if (!res.ok) throw new Error();
         const data = await res.json();
         
-        elements.temp.innerText = `${data.temperature.toFixed(2)}°C`;
+        elements.temp.innerText = `${data.temperature.toFixed(2)}`;
         elements.hum.innerText  = `${data.humidity.toFixed(2)}%`;
-        elements.pres.innerText = `${data.pressure.toFixed(2)} hPa`;
+        elements.pres.innerText = `${data.pressure.toFixed(2)}`;
         
         lastUpdate = new Date();
         setOnlineStatus(true);
