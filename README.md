@@ -1,4 +1,4 @@
-# ARES-32: Distributed IoT Telemetry Engine & FastMCP Bridge
+# ARES-32: Distributed IoT Telemetry Engine 
 
 [![Platform: ESP-IDF](https://img.shields.io/badge/Platform-ESP--IDF-red)](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/)
 [![RTOS: FreeRTOS](https://img.shields.io/badge/RTOS-FreeRTOS-blue)](https://www.freertos.org/)
