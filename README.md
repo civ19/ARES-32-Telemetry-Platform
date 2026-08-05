@@ -16,9 +16,8 @@
 The platform is architected as a decoupled, multi-service environment:
 
 1.  **Firmware Layer (`/firmware`):** C-based ESP-IDF application managing sensor acquisition and NimBLE provisioning.
-2.  **Backend Layer (`/backend`):** Java Spring Boot microservice providing RESTful endpoints, PostgreSQL persistence, and MQTT data ingestion.
-3.  **Intelligence Bridge (`/gateway`):** Python-based FastMCP server that exposes real-time hardware telemetry to AI Agents (Claude/GPT-4).
-4.  **Orchestration (`/`):** Unified Docker-Compose environment for reproducible, sandbox-ready deployment.
+2.  **Backend Layer (`/backend`):** Java Spring Boot microservice providing RESTful endpoints, PostgreSQL persistence, and MQTT data ingestion..
+3.  **Orchestration (`/`):** Unified Docker-Compose environment for reproducible, sandbox-ready deployment.
 
 ---
 
