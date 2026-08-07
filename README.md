@@ -35,9 +35,13 @@ The platform is architected as a decoupled, multi-service environment:
 *   **NimBLE Provisioning:** Developed a custom **BLE GATT Profile** for secure, out-of-band WiFi credential handoff and MQTT broker URI configuration.
 *   **Event-Driven Connectivity:** Utilized **FreeRTOS Event Groups** to manage complex network states (WiFi/MQTT) and automated reconnection logic.
 
+### 3. Testing/Quality Assurance
+* Persistence: Built a Spring Boot API with PostgreSQL to persist sensor readings. Environment variables for broker configuration instead of hardcoding it.
+* Testing: Used JUnit 5 and Mockito for Unit testing the service layer logic, along with Integration testing for the REST controllers. With H2 in-memory database for Integration test environment.
+
 <img width="1914" height="980" alt="image" src="https://github.com/user-attachments/assets/8883707c-450c-46d3-91d1-1d7a82a7d98a" />
 
-### 3. Containerization
+### 4. Containerization
 *   **Dockerized Infrastructure:** Full containerization of the backend and gateway services to ensure stability and reproducibility in isolated sandbox environments.
 
 <img width="1248" height="630" alt="image" src="https://github.com/user-attachments/assets/148d86ae-78d3-4c78-b3a1-70940897ae57" />
