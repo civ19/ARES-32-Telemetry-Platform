@@ -7,7 +7,7 @@
 #include "wifi/wifi.h"
 #include "abstractions/abstractions.h"
 #include "mqtt.h"
-#include "sensor/bmetask.h"
+#include "bme_driver/bmetask.h"
 #include "json/json.h"
 #include "nimble_prov/ble_gatt.h"
 

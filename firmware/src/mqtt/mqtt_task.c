@@ -25,7 +25,7 @@ void mqtt_prov_task(void *pv) {
 }
 
 void trigger_mqtt_prov(const char* uri) {
-    mutex_log('D', "DEBUG", "Trigger received URI: %s", uri);
+    mutex_log('I', "MQTT", "Trigger received URI: %s", uri);
     strlcpy((char*) dyn_mqtt_uri, uri,  sizeof(dyn_mqtt_uri));
 
     if(mqtt_uri_handle != NULL) xTaskNotifyGive(mqtt_uri_handle);

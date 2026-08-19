@@ -7,9 +7,11 @@
 
 static const char *TAG = "BLE_GAP";
 
+//first we clear the buffer. then set the connection mode. then ad callback. 
+
 
 void ble_app_advertise(void) {
-    struct ble_hs_adv_fields fields;
+    struct ble_hs_adv_fields fields; //reset fields
     memset(&fields, 0, sizeof(fields));
 
     fields.flags = BLE_HS_ADV_F_DISC_GEN | BLE_HS_ADV_F_BREDR_UNSUP;
@@ -53,7 +55,7 @@ void ble_app_advertise(void) {
 }
 
 
-int ble_gap_event(struct ble_gap_event *event, void* arg) { //handle for gap events 
+int ble_gap_event(struct ble_gap_event *event, void* arg) { //gap event handler !
 
     switch (event->type) {
         case BLE_GAP_EVENT_CONNECT:
